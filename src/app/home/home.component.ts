@@ -6,11 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  imageUrls= [
+  imageUrls = [
     {
       url:
         'https://cdn.vox-cdn.com/uploads/chorus_image/image/56748793/dbohn_170625_1801_0018.0.0.jpg',
-      caption: 'The first slide',
+      caption: 'The first slideeee',
       href: '#config'
     },
     {
