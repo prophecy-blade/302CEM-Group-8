@@ -1,0 +1,55 @@
+.suites-sidenav-container {
+  left: 50px;
+  right: 50px;
+  top: 220px;
+  height: 420px;
+  position: absolute;
+}
+
+.sidenav-content {
+  display: flex;
+  width: 200px;
+  flex-direction: column;
+}
+
+.suites-sidenav {
+  top: 200px;
+  bottom: 50px;
+}
+
+:host >>> .mat-drawer {
+  color: black;
+}
+
+:host >>> .mat-list-item-content {
+  color: rgb(255, 255, 255);
+}
+
+:host >>> .mat-list-item-content:hover {
+  color: rgb(0, 0, 0);
+}
+
+:host >>> .mat-nav-list .mat-list-item {
+  background: linear-gradient(to left, rgb(0, 0, 0) 50%, gold 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: all 0.5s ease;
+}
+
+:host >>> .mat-nav-list .mat-list-item:hover {
+  background-position: left bottom;
+  color: black;
+}
+
+.suites-option {
+  margin-left: 50px;
+  margin-top: 25px;
+  margin-right: 50px;
+  width: 1000px;
+  justify-content: space-between;
+  display: flex;
+}
+
+.suites-search {
+  margin-top: 10px;
+}
