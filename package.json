@@ -1,17 +1,16 @@
 {
-    "name": "302cem-group-8",
-    "version": "1.0.0",
-    "description": "",
-    "main": "firestore.js",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-      "@google-cloud/firestore": "^0.17.0",
-      "express": "^4.16.3",
-      "semver": "^5.5.1"
-    }
+  "name": "302cem-group-8",
+  "version": "1.0.0",
+  "description": "",
+  "main": "firestore.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/firestore": "^0.17.0",
+    "express": "^4.16.3",
+    "semver": "^5.5.1"
   }
-  
+}
