@@ -1,0 +1,43 @@
+<div class="home-container">
+  <div class="app-icon">
+    <i class="fas fa-hotel fa-3x"></i>
+    <h3 class="app-title">
+      {{ title }}
+    </h3>
+  </div>
+
+  <div class="navigation-bar">
+    <p-tabMenu [model]="items"></p-tabMenu>
+  </div>
+
+  <div class="user-name">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      Welcome, Booooooo &nbsp;
+      <mat-icon>keyboard_arrow_down</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>account_circle</mat-icon>
+        <span>My Account</span>
+      </button>
+      <button mat-menu-item disabled>
+        <mat-icon>book</mat-icon>
+        <span>My Booking</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>
+          lock_open</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+
+</div>
+
+<router-outlet></router-outlet>
+
+<mat-toolbar class="footer">
+  <span>Help |&nbsp;</span>
+  <span>Sitemap</span>
+</mat-toolbar>
+<!-- <img width="300" alt="Angular Logo" src=""> -->
