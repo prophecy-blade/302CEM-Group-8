@@ -29,14 +29,14 @@ const test = firestore.collection("hotelsystem").doc("main_database").collection
 //--------------------------------------------------
 //IF WANT TO TEST YOU REMOVE //
 //--------------------------------------------------
-// Enter new data into the document.
-test.doc("test_id").set({
-  testname: 'Welcome to Firestore',
-  testothers: 'Hello World',
-}).then(() => {
-  // Document created successfully.
-  console.log("Document created successfully.");
-});
+// // Enter new data into the document.
+// test.doc("test_id").set({
+//   testname: 'Welcome to Firestore',
+//   testothers: 'Hello World',
+// }).then(() => {
+//   // Document created successfully.
+//   console.log("Document created successfully.");
+// });
 
 // // // Update an existing document.
 // // document.update({
@@ -51,6 +51,17 @@ test.doc("test_id").set({
 //   console.log("Document read successfully.");
 //   console.log(data.data());
 // });
+test.doc("test_id").get().then(doc => {
+      if (!doc.exists) {
+        console.log('No such document!');
+      } else {
+        console.log("Document read successfully.");
+        console.log(doc.data());
+      }
+    })
+    .catch(err => {
+      console.log('Error getting document', err);
+    });
 
 // // // Delete the document.
 // // document.delete().then(() => {
