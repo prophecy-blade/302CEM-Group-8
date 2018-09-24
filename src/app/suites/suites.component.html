@@ -27,7 +27,7 @@
     </mat-select>
   </mat-form-field>
 
-  <button mat-icon-button class="suites-search">
+  <button mat-icon-button class="suites-search" (click)="showDialog()">
     <mat-icon aria-label="Search">search</mat-icon>
   </button>
 
@@ -37,19 +37,66 @@
   <mat-sidenav-container class="suites-sidenav-container">
     <mat-sidenav #sidenav mode="side" opened class="sidenav-content">
       <mat-nav-list>
-        <a mat-list-item routerLink="">Party</a>
-        <a mat-list-item routerLink="">Deluxe</a>
-        <a mat-list-item routerLink="">Family</a>
-        <a mat-list-item routerLink="">Premier</a>
-        <a mat-list-item routerLink="">Straits</a>
-        <a mat-list-item routerLink="">Double Queen</a>
-        <a mat-list-item routerLink="">Double</a>
-        <a mat-list-item routerLink="">Double Single</a>
-        <a mat-list-item routerLink="">Single</a>
+        <a mat-list-item routerLink="suite-single">
+          <mat-icon>person</mat-icon>&nbsp;&nbsp;Single
+        </a>
+        <a mat-list-item routerLink="suite-double">
+          <mat-icon>people</mat-icon>&nbsp;&nbsp;Double
+        </a>
+        <a mat-list-item routerLink="suite-party">
+          <mat-icon>cake</mat-icon>&nbsp;&nbsp;Party
+        </a>
+        <a mat-list-item routerLink="suite-deluxe">
+          <mat-icon>star</mat-icon>&nbsp;&nbsp;Deluxe
+        </a>
+        <a mat-list-item routerLink="suite-family">
+          <mat-icon>weekend</mat-icon>&nbsp;&nbsp;Family
+        </a>
+        <a mat-list-item routerLink="suite-straits">
+          <mat-icon>beach_access</mat-icon>&nbsp;&nbsp;Straits
+        </a>
       </mat-nav-list>
     </mat-sidenav>
 
     <mat-sidenav-content>
+      <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
+
+<p-dialog header="Available Room" [(visible)]="display" [modal]="true" [responsive]="true" [width]="800" [minWidth]="350"
+  [minY]="70" [maximizable]="true" [baseZIndex]="10000" [height]="500">
+
+  <p-carousel headerText="Please select a room" [value]="">
+    <!-- <ng-template let-car pTemplate="item"> -->
+    <div class="ui-grid ui-grid-responsive">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-12"><img src="assets/images/suites/room27.jpg" width="400"></div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-6">Vin</div>
+        <div class="ui-grid-col-6">aaa</div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-6">Year</div>
+        <div class="ui-grid-col-6">bbb</div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-6">Color</div>
+        <div class="ui-grid-col-6">ccc</div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-12">
+          <button type="button" pButton icon="pi pi-search" (click)="selectCar(car)"></button>
+        </div>
+      </div>
+    </div>
+    <!-- </ng-template> -->
+  </p-carousel>
+
+  <p-footer>
+    <button type="button" pButton icon="pi pi-check" (click)="display=false" label="Yes" class="suites-dialog-primary"
+      style="background-color:black; border: 1px solid black"></button>
+    <button type="button" pButton icon="pi pi-close" (click)="display=false" label="No" class="ui-button-secondary"></button>
+  </p-footer>
+</p-dialog>

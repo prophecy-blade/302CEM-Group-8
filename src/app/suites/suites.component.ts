@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 export interface TotalAdults {
   value: number;
@@ -17,7 +18,6 @@ export interface TotalChildrens {
 })
 export class SuitesComponent implements OnInit {
   constructor() {}
-
   ngOnInit() {}
 
   totalAdults: TotalAdults[] = [
@@ -31,4 +31,10 @@ export class SuitesComponent implements OnInit {
     { value: 1, viewValue: 1 },
     { value: 2, viewValue: 2 }
   ];
+
+  display: boolean = false;
+
+  showDialog() {
+    this.display = true;
+  }
 }
