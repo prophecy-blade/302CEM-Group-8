@@ -13,10 +13,14 @@ export class AppComponent {
 
   ngOnInit() {
     this.items = [
-      { label: 'The Transylvania', icon: 'fas fa-moon', routerLink: ['/home'] },
+      {
+        label: 'The Transylvania',
+        icon: 'fas fa-hotel',
+        routerLink: ['/home']
+      },
       { label: 'Suites', icon: 'fas fa-bed', routerLink: ['/suites'] },
       { label: 'Services', icon: 'fas fa-book' },
-      { label: 'Account', icon: 'fas fa-dollar-sign' },
+      { label: 'Account', icon: 'fas fa-user', routerLink: ['/user-account'] },
       { label: 'Contact', icon: 'fas fa-envelope' }
     ];
   }

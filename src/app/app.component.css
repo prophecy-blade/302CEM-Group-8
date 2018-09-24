@@ -56,3 +56,29 @@
   justify-content: center;
   font-size: 12px;
 }
+
+/* nav bar active style */
+:host >>> .ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem.ui-state-active {
+  background-color: gold;
+  border: 1px solid black;
+}
+
+/* nav bar active font color */
+:host
+  >>> .ui-tabmenu
+  .ui-tabmenu-nav
+  .ui-tabmenuitem.ui-state-active
+  .ui-menuitem-link
+  .ui-menuitem-text {
+  color: black;
+}
+
+/* nav bar active icon color */
+:host
+  >>> .ui-tabmenu
+  .ui-tabmenu-nav
+  .ui-tabmenuitem.ui-state-active
+  .ui-menuitem-link
+  .ui-menuitem-icon {
+  color: black;
+}
