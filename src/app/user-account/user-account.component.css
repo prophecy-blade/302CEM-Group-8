@@ -1,0 +1,53 @@
+.suites-sidenav-container {
+  left: 50px;
+  right: 50px;
+  top: 130px;
+  height: 550px;
+  position: absolute;
+}
+
+.sidenav-content {
+  display: flex;
+  width: 250px;
+  flex-direction: column;
+  background: black;
+}
+
+.suites-sidenav {
+  top: 200px;
+  bottom: 50px;
+}
+
+/* nav list font color */
+:host >>> .mat-list-item-content {
+  color: rgb(255, 255, 255);
+}
+
+/* nav list font color hover */
+:host >>> .mat-list-item-content:hover {
+  color: rgb(0, 0, 0);
+}
+
+/* nav list transition effect */
+:host >>> .mat-nav-list .mat-list-item {
+  background: linear-gradient(to left, rgb(0, 0, 0) 50%, gold 50%);
+  background-size: 200% 100%;
+  background-position: right bottom;
+  transition: all 0.5s ease;
+  height: 69px;
+}
+
+/* nav list transition hover */
+:host >>> .mat-nav-list .mat-list-item:hover {
+  background-position: left bottom;
+  color: black;
+}
+
+.example-card {
+  max-width: 400px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}

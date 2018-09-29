@@ -8,31 +8,35 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
   imageUrls = [
     {
-      url:
-        'https://cdn.vox-cdn.com/uploads/chorus_image/image/56748793/dbohn_170625_1801_0018.0.0.jpg',
-      caption: 'The first slideeee',
-      href: '#config'
+      url: 'assets/images/intro/intro.jpg',
+      caption: 'The View'
     },
     {
-      url:
-        'https://cdn.vox-cdn.com/uploads/chorus_asset/file/9278671/jbareham_170917_2000_0124.jpg',
-      clickAction: () => alert('custom click function')
+      url: 'assets/images/intro/intro.banquet-buffet.jpg',
+      caption: 'The Banquet'
     },
     {
-      url:
-        'https://cdn.vox-cdn.com/uploads/chorus_image/image/56789263/akrales_170919_1976_0104.0.jpg',
-      caption: 'Apple TV',
-      href: 'https://www.apple.com/'
+      url: 'assets/images/intro/intro.hall.jpg',
+      caption: 'The Hall'
     },
-    'https://cdn.vox-cdn.com/uploads/chorus_image/image/56674755/mr_pb_is_the_best.0.jpg',
     {
-      url: 'assets/kitties.jpg',
-      backgroundSize: 'contain',
-      backgroundPosition: 'center'
+      url: 'assets/images/intro/intro.ballroom.jpg',
+      caption: 'The Ballroom'
+    },
+    {
+      url: 'assets/images/intro/lobby.jpg',
+      caption: 'The Lobby'
     }
+    // {
+    //   url:
+    //     'https://cdn.vox-cdn.com/uploads/chorus_asset/file/9278671/jbareham_170917_2000_0124.jpg',
+    //   clickAction: () => alert('custom click function')
+    //   href: 'https://www.apple.com/'
+    //   href: '#config'
+    // },
   ];
 
-  height: string = '400px';
+  height: string = '618px';
   minHeight: string;
   arrowSize: string = '30px';
   showArrows: boolean = true;

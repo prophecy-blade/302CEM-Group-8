@@ -20,6 +20,12 @@ import { MatNativeDateModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { CarouselModule } from 'primeng/carousel';
+import { GalleriaModule } from 'primeng/galleria';
+import { MatCardModule } from '@angular/material/card';
 
 import { HomeComponent } from './home/home.component';
 import { SuitesComponent } from './suites/suites.component';
@@ -27,6 +33,15 @@ import { UserAccountComponent } from './user-account/user-account.component';
 import { UserBookingComponent } from './user-booking/user-booking.component';
 import { ContactComponent } from './contact/contact.component';
 import { ServicesComponent } from './services/services.component';
+import { SuitesDetailComponent } from './suites-detail/suites-detail.component';
+import { SuitePartyComponent } from './suites-detail/suite-party/suite-party.component';
+import { SuiteFamilyComponent } from './suites-detail/suite-family/suite-family.component';
+import { SuiteDeluxeComponent } from './suites-detail/suite-deluxe/suite-deluxe.component';
+import { SuiteStraitsComponent } from './suites-detail/suite-straits/suite-straits.component';
+import { SuiteDoubleComponent } from './suites-detail/suite-double/suite-double.component';
+import { SuiteSingleComponent } from './suites-detail/suite-single/suite-single.component';
+import { AccountDetailComponent } from './account-detail/account-detail.component';
+import { UserInfoComponent } from './account-detail/user-info/user-info.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +52,18 @@ import { ServicesComponent } from './services/services.component';
     UserBookingComponent,
     ContactComponent,
     ServicesComponent,
+<<<<<<< HEAD
+=======
+    SuitesDetailComponent,
+    SuitePartyComponent,
+    SuiteFamilyComponent,
+    SuiteDeluxeComponent,
+    SuiteStraitsComponent,
+    SuiteDoubleComponent,
+    SuiteSingleComponent,
+    AccountDetailComponent,
+    UserInfoComponent
+>>>>>>> 93c08ec5435c2401fa1d9acbf08042189a21d0cc
   ],
   imports: [
     BrowserModule,
@@ -56,6 +83,15 @@ import { ServicesComponent } from './services/services.component';
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
+<<<<<<< HEAD
+=======
+    MatDialogModule,
+    DialogModule,
+    ButtonModule,
+    CarouselModule,
+    GalleriaModule,
+    MatCardModule
+>>>>>>> 93c08ec5435c2401fa1d9acbf08042189a21d0cc
   ],
   providers: [],
   bootstrap: [AppComponent]
