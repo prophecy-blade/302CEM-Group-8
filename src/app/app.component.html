@@ -10,7 +10,12 @@
     <p-tabMenu [model]="items"></p-tabMenu>
   </div>
 
-  <div class="user-name">
+  <div *ngIf="auth.user?.id == null">
+    <button (click)="auth.googleLogin()">
+      login
+    </button>
+  </div>
+  <div class="user-name" *ngIf="auth.user?.id !== null">
     <button mat-icon-button [matMenuTriggerFor]="menu">
       Welcome, Booooooo &nbsp;
       <mat-icon>keyboard_arrow_down</mat-icon>

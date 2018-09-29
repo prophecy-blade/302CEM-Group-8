@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
 
@@ -35,7 +36,7 @@ import { ServicesComponent } from './services/services.component';
     UserAccountComponent,
     UserBookingComponent,
     ContactComponent,
-    ServicesComponent
+    ServicesComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +55,7 @@ import { ServicesComponent } from './services/services.component';
     MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

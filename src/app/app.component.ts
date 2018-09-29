@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 
+import { AuthService } from './auth.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -10,6 +12,12 @@ export class AppComponent {
   title = 'Hotel Transylvania';
 
   items: MenuItem[];
+
+  user_id: String = null;
+
+  constructor(public auth: AuthService) {
+    console.log(auth.user);
+  }
 
   ngOnInit() {
     this.items = [
