@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as Firebase from 'firebase';
 import { Observable } from 'rxjs';
-
+import { Router } from '@angular/router';
 
 interface User {
   id: String,
@@ -20,7 +20,7 @@ export class AuthService {
 
   user: Observable<User>;
 
-  constructor() {
+  constructor(public router: Router) {
     var config = {
       apiKey: "AIzaSyBr71V5ZUPDcx6CusFJWPZ52gwRa8DlgSA",
       authDomain: "tclowdemo.firebaseapp.com",
@@ -73,8 +73,9 @@ export class AuthService {
           data.role = doc.data().role;
           //t.verifyUserRole(data, doc.data().role);
 
-          db.collection('users').doc(user.id).set(data, {merge: true}).then(function(result) {
+          db.doc('users/' + user.id).set(data, {merge: true}).then(function(result) {
             console.log("Login Success => ", result);
+            t.router.navigateByUrl('/home');
             //return result;
           }).catch(function(error) {
             console.log(error);
@@ -85,8 +86,9 @@ export class AuthService {
       });
 
       if(verify == false) {
-        db.collection('users').doc(user.id).set(data, {merge: true}).then(function(result) {
+        db.doc('users/' + user.id).set(data, {merge: true}).then(function(result) {
           console.log("Login Success => ", result);
+          t.router.navigateByUrl('/home');
           //return result;
         }).catch(function(error) {
           console.log(error);

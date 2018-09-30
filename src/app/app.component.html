@@ -10,33 +10,41 @@
     <p-tabMenu [model]="items"></p-tabMenu>
   </div>
 
-  <div *ngIf="auth.user?.id == null">
-    <button (click)="auth.googleLogin()">
-      login
-    </button>
-  </div>
-  <div class="user-name" *ngIf="auth.user?.id !== null">
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      Welcome, Booooooo &nbsp;
-      <mat-icon>keyboard_arrow_down</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>account_circle</mat-icon>
-        <span>My Account</span>
+  <ng-template #authenticated>
+    <div class="user-name">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        Welcome, {{auth.user?.username}} &nbsp;
+        <mat-icon>keyboard_arrow_down</mat-icon>
       </button>
-      <button mat-menu-item disabled>
-        <mat-icon>book</mat-icon>
-        <span>My Booking</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>
-          lock_open</mat-icon>
-        <span>Logout</span>
-      </button>
-    </mat-menu>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>account_circle</mat-icon>
+          <span>My Account</span>
+        </button>
+        <button mat-menu-item disabled>
+          <mat-icon>book</mat-icon>
+          <span>My Booking</span>
+        </button>
+        <button mat-menu-item (click)="auth.signOut()">
+          <mat-icon>
+            lock_open</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
+  </ng-template>
+
+  <div class="user-name" *ngIf="auth.user | async; then authenticated else guest">
+    <!-- empty -->
   </div>
 
+  <ng-template #guest>
+    <div class="user-name">
+      <button (click)="auth.googleLogin()">
+        login
+      </button>
+    </div>
+  </ng-template>
 </div>
 
 <router-outlet></router-outlet>

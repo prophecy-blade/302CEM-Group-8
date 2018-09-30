@@ -2,7 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
+import { CoreModule } from './core/core.module';
 
+import { AngularFireModule } from '@angular/fire';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
@@ -52,8 +54,6 @@ import { UserInfoComponent } from './account-detail/user-info/user-info.componen
     UserBookingComponent,
     ContactComponent,
     ServicesComponent,
-<<<<<<< HEAD
-=======
     SuitesDetailComponent,
     SuitePartyComponent,
     SuiteFamilyComponent,
@@ -63,7 +63,6 @@ import { UserInfoComponent } from './account-detail/user-info/user-info.componen
     SuiteSingleComponent,
     AccountDetailComponent,
     UserInfoComponent
->>>>>>> 93c08ec5435c2401fa1d9acbf08042189a21d0cc
   ],
   imports: [
     BrowserModule,
@@ -83,15 +82,19 @@ import { UserInfoComponent } from './account-detail/user-info/user-info.componen
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
-<<<<<<< HEAD
-=======
     MatDialogModule,
     DialogModule,
     ButtonModule,
     CarouselModule,
     GalleriaModule,
-    MatCardModule
->>>>>>> 93c08ec5435c2401fa1d9acbf08042189a21d0cc
+    MatCardModule,
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyBr71V5ZUPDcx6CusFJWPZ52gwRa8DlgSA",
+      authDomain: "tclowdemo.firebaseapp.com",
+      databaseURL: "https://tclowdemo.firebaseio.com",
+      projectId: "tclowdemo",
+    }),
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
