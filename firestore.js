@@ -74,6 +74,9 @@ const payment = firestore.collection("hotelsystem").doc("main_database").collect
 //----------------------------------------------------------------------------
 //-----functions-----
 
+function generateId() {
+  //increment id
+}
 function addSupervisor(supervisorId,firstName,lastName,gender,ic,email,phone) {
 
   supervisorRef.doc(supervisorId).set({
@@ -278,6 +281,7 @@ function addToRecord() {
 
 
 //--------------------------------------------------------------------------------
+//-----TESTING-----
 //add dummy room type
 // roomRef.doc("T009").set({
 //   type: "party",
@@ -292,6 +296,30 @@ function addToRecord() {
 //   price: 1800
 // }).then((data)=> {
 //   console.log("Room has been added successfully.")
+// })
+// customerRef.doc("blabla2").set({
+//   firstName: "bla",
+//   lastName: "bla2",
+//   gender: "male",
+//   ic: "131313-13-1313",
+//   email: "blabla@gmail.com",
+//   phone: "012-1234567",
+//   nationality: "abc",
+//   city: "def",
+//   state: "ghi"
+// }).then((data)=> {
+//   console.log("Customer "+ "blabla1"+" has been added");
+// })
+
+// customerRef.where("gender", "==" , "male").get().then(snapshot => {
+//   var Data = []
+//   snapshot.forEach(doc => {
+//     var data = doc.data()
+//     data.id = doc.id
+//     Data.push(data);
+//     console.log(data);
+//   });
+//   console.log(Data);
 // })
 //-----------------------------------------------------------------
 //-----exports-----
