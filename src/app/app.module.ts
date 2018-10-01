@@ -2,6 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
+import { CoreModule } from './core/core.module';
+
+import { AngularFireModule } from '@angular/fire';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
@@ -84,7 +87,14 @@ import { UserInfoComponent } from './account-detail/user-info/user-info.componen
     ButtonModule,
     CarouselModule,
     GalleriaModule,
-    MatCardModule
+    MatCardModule,
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyBr71V5ZUPDcx6CusFJWPZ52gwRa8DlgSA",
+      authDomain: "tclowdemo.firebaseapp.com",
+      databaseURL: "https://tclowdemo.firebaseio.com",
+      projectId: "tclowdemo",
+    }),
+    CoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
