@@ -1,0 +1,19 @@
+.contact {
+  margin-left: 80px;
+  margin-right: 80px;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.ui-inputgroup {
+  height: 40px;
+}
+
+.contact-btn {
+  margin-top: 250px;
+}
+
+.mat-raised-button {
+  background-color: black;
+  color: white;
+}

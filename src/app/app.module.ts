@@ -28,11 +28,13 @@ import { ButtonModule } from 'primeng/button';
 import { CarouselModule } from 'primeng/carousel';
 import { GalleriaModule } from 'primeng/galleria';
 import { MatCardModule } from '@angular/material/card';
+import { TableModule } from 'primeng/table';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 import { HomeComponent } from './home/home.component';
 import { SuitesComponent } from './suites/suites.component';
 import { UserAccountComponent } from './user-account/user-account.component';
-import { UserBookingComponent } from './user-booking/user-booking.component';
 import { ContactComponent } from './contact/contact.component';
 import { ServicesComponent } from './services/services.component';
 import { SuitesDetailComponent } from './suites-detail/suites-detail.component';
@@ -44,6 +46,7 @@ import { SuiteDoubleComponent } from './suites-detail/suite-double/suite-double.
 import { SuiteSingleComponent } from './suites-detail/suite-single/suite-single.component';
 import { AccountDetailComponent } from './account-detail/account-detail.component';
 import { UserInfoComponent } from './account-detail/user-info/user-info.component';
+import { UserBookingComponent } from './account-detail/user-booking/user-booking.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,6 @@ import { UserInfoComponent } from './account-detail/user-info/user-info.componen
     HomeComponent,
     SuitesComponent,
     UserAccountComponent,
-    UserBookingComponent,
     ContactComponent,
     ServicesComponent,
     SuitesDetailComponent,
@@ -62,7 +64,8 @@ import { UserInfoComponent } from './account-detail/user-info/user-info.componen
     SuiteDoubleComponent,
     SuiteSingleComponent,
     AccountDetailComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    UserBookingComponent
   ],
   imports: [
     BrowserModule,
@@ -88,11 +91,14 @@ import { UserInfoComponent } from './account-detail/user-info/user-info.componen
     CarouselModule,
     GalleriaModule,
     MatCardModule,
+    TableModule,
+    InputTextModule,
+    InputTextareaModule,
     AngularFireModule.initializeApp({
-      apiKey: "AIzaSyBr71V5ZUPDcx6CusFJWPZ52gwRa8DlgSA",
-      authDomain: "tclowdemo.firebaseapp.com",
-      databaseURL: "https://tclowdemo.firebaseio.com",
-      projectId: "tclowdemo",
+      apiKey: 'AIzaSyBr71V5ZUPDcx6CusFJWPZ52gwRa8DlgSA',
+      authDomain: 'tclowdemo.firebaseapp.com',
+      databaseURL: 'https://tclowdemo.firebaseio.com',
+      projectId: 'tclowdemo'
     }),
     CoreModule
   ],
