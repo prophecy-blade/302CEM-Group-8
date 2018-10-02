@@ -80,13 +80,13 @@ function generateId() {
 
 function getId(userId) {
 
-  userRef.doc().where("id", "==" , userId).get().then(snapshot => {
+  userRef.where("id", "==" , userId).get().then(snapshot => {
     var Data = []
     snapshot.forEach(doc => {
       var data = doc.data()
       data.id = doc.id
       Data.push(data);
-      console.log(data);
+      // console.log(data);
     });
     console.log(Data);
     return Data
@@ -203,6 +203,21 @@ function deleteCustomer(customerId) {
   })
 }
 
+function getRoomType() {
+
+  roomRef.get().then(snapshot => {
+    var Data = []
+    snapshot.forEach(doc => {
+      var data = doc.data()
+      data.id = doc.id
+      Data.push(data);
+      // console.log(data);
+    });
+    console.log(Data);
+    return Data
+  })
+}
+
 function addRoom(roomId,roomType,roomDescription,bedCount,MinBedCount,MaxBedCount,roomPrice,supervisorId,hotelDeskPersonnelId) {
   //valid roomId,supervisorId,hotelDeskPersonnelId
   roomRef.doc(rommId).set({
@@ -238,18 +253,22 @@ function deleteRoom(roomId) {
   })
 }
 
-function resevationRoom(roomId,customerId) {
+function resevationRoom(roomId,customerId,roomType) {
   //valid roomId avalaible
-  stayRoomRef.doc(roomId).set({
-    checkInDate: new Date(),
-    checkInBy: "",
-    customerId: customerId,
-    totalAmount: "",
-    status: "booking"
-  }).then((data) => {
-    // Document created successfully.
-    console.log("Room "+roomId+" has been booked successfully by "+customerId);
-  });
+  roomRef.doc(roomType).get().then(data => {
+    var amount = data.data().price;
+
+    stayRoomRef.doc(roomId).set({
+      checkInDate: new Date(),
+      checkInBy: "",
+      customerId: customerId,
+      totalAmount: amount,
+      status: "booking"
+    }).then((data) => {
+      // Document created successfully.
+      console.log("Room "+roomId+" has been booked successfully by "+customerId);
+    });
+  }) 
 }
 
 function cancelResevationRoom(roomId,customerId) {
@@ -259,7 +278,7 @@ function cancelResevationRoom(roomId,customerId) {
   })
 }
 
-function adminAddRoom(roomId,customerId,adminId) {
+function adminAddRoom(roomId,customerId,adminId) { //resevation
 
   stayRoomRef.doc(roomId).set({
     checkInDate: new Date(),
@@ -271,7 +290,7 @@ function adminAddRoom(roomId,customerId,adminId) {
   })
 }
 
-function adminEditRoom(roomId,customerId,adminId) {
+function adminEditRoom(roomId,customerId,adminId) { //resevation
 
   stayRoomRef.doc(roomId).update({
     checkInDate: new Date(),
@@ -283,20 +302,23 @@ function adminEditRoom(roomId,customerId,adminId) {
   })
 }
 
-function adminDeleteRoom(roomId) {
+function adminDeleteRoom(roomId) { //resevation
 
   stayRoomRef.doc(roomId).delete().then((data)=> {
     console.log("admin successfully delete room "+roomId);
   })
 }
 
-function checkOut(roomId,customerId,supervisorId,hotelDeskPersonnelId,adminId) {
+function checkOut(roomId,customerId,workerId) {
 
   stayRoomRef.doc(roomId).update({
     checkOutDate: new Date(),
-    checkOutBy: roleId,
+    checkOutBy: workerId,
   }).then(data => {
     console.log("Customer successfully checkout");
+    stayRoomRef.doc(roomId).get().then(data=> {
+
+    })
   })
 }
 function addToRecord(data) {
@@ -306,6 +328,7 @@ function addToRecord(data) {
 
 //--------------------------------------------------------------------------------
 //-----TESTING-----
+// getId("")
 //add dummy room type
 // roomRef.doc("T009").set({
 //   type: "party",
@@ -348,6 +371,7 @@ function addToRecord(data) {
 //-----------------------------------------------------------------
 //-----exports-----
 module.exports = {
+  getId,
   addSupervisor,
   editSupervisor,
   deleteSupervisor,
@@ -357,6 +381,7 @@ module.exports = {
   addCustomer,
   editCustomer,
   deleteCustomer,
+  getRoomType,
   addRoom,
   editRoom,
   deleteRoom,
@@ -364,6 +389,7 @@ module.exports = {
   cancelResevationRoom,
   adminAddRoom,
   adminEditRoom,
-  adminDeleteRoom
+  adminDeleteRoom,
+  checkOut
 };
 //import { xxx } from 'this file'
