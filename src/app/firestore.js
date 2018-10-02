@@ -317,12 +317,18 @@ function checkOut(roomId,customerId,workerId) {
   }).then(data => {
     console.log("Customer successfully checkout");
     stayRoomRef.doc(roomId).get().then(data=> {
-
+      var id = data.id
+      var data = data.data();
+      console.log(data.checkInDate);
     })
   })
 }
-function addToRecord(data) {
+
+function addToRecord(data,id) {
   // get data ->validate->add
+  recordRoomRef.doc(id).set({
+    data
+  })
 }
 
 
