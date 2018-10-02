@@ -34,7 +34,7 @@ const roomRef = firestore.collection("hotelsystem").doc("main_database").collect
 const bookingRef = firestore.collection("hotelsystem").doc("main_database").collection("booking");
 const stayRoomRef = firestore.collection("hotelsystem").doc("main_database").collection("booking").doc("inStay").collection("room");
 const recordRoomRef = firestore.collection("hotelsystem").doc("main_database").collection("booking").doc("record").collection("room");
-const payment = firestore.collection("hotelsystem").doc("main_database").collection("payment");
+const paymentRef = firestore.collection("hotelsystem").doc("main_database").collection("payment");
 
 //--------------------------------------------------
 //Sample
@@ -76,6 +76,21 @@ const payment = firestore.collection("hotelsystem").doc("main_database").collect
 
 function generateId() {
   //increment id
+}
+
+function getId(userId) {
+
+  userRef.doc().where("id", "==" , userId).get().then(snapshot => {
+    var Data = []
+    snapshot.forEach(doc => {
+      var data = doc.data()
+      data.id = doc.id
+      Data.push(data);
+      console.log(data);
+    });
+    console.log(Data);
+    return Data
+  })
 }
 function addSupervisor(supervisorId,firstName,lastName,gender,ic,email,phone) {
 
@@ -275,7 +290,16 @@ function adminDeleteRoom(roomId) {
   })
 }
 
-function addToRecord() {
+function checkOut(roomId,customerId,supervisorId,hotelDeskPersonnelId,adminId) {
+
+  stayRoomRef.doc(roomId).update({
+    checkOutDate: new Date(),
+    checkOutBy: roleId,
+  }).then(data => {
+    console.log("Customer successfully checkout");
+  })
+}
+function addToRecord(data) {
   // get data ->validate->add
 }
 
