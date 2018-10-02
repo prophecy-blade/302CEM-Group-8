@@ -82,3 +82,15 @@
   .ui-menuitem-icon {
   color: black;
 }
+
+.help-btn {
+  background-color: black;
+  border: black;
+  font-size: 11px;
+}
+
+.help-btn:hover {
+  background-color: gold !important;
+  border: gold !important;
+  color: black !important;
+}

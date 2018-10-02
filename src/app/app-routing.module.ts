@@ -10,6 +10,9 @@ import { SuiteDeluxeComponent } from './suites-detail/suite-deluxe/suite-deluxe.
 import { SuiteStraitsComponent } from './suites-detail/suite-straits/suite-straits.component';
 import { SuiteDoubleComponent } from './suites-detail/suite-double/suite-double.component';
 import { SuiteSingleComponent } from './suites-detail/suite-single/suite-single.component';
+import { UserInfoComponent } from './account-detail/user-info/user-info.component';
+import { UserBookingComponent } from './account-detail/user-booking/user-booking.component';
+import { ContactComponent } from './contact/contact.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, //empty path means when no path from the url, then straightaway redirect to-
@@ -27,7 +30,16 @@ const routes: Routes = [
       { path: 'suite-single', component: SuiteSingleComponent }
     ]
   },
-  { path: 'user-account', component: UserAccountComponent }
+  {
+    path: 'user-account',
+    component: UserAccountComponent,
+    children: [
+      { path: '', redirectTo: 'user-info', pathMatch: 'full' },
+      { path: 'user-info', component: UserInfoComponent },
+      { path: 'user-booking', component: UserBookingComponent }
+    ]
+  },
+  { path: 'contact', component: ContactComponent }
 ];
 
 @NgModule({

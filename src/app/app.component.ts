@@ -8,7 +8,7 @@ import { MenuItem } from 'primeng/api';
 })
 export class AppComponent {
   title = 'Hotel Transylvania';
-
+  display: boolean = false;
   items: MenuItem[];
 
   ngOnInit() {
@@ -21,7 +21,11 @@ export class AppComponent {
       { label: 'Suites', icon: 'fas fa-bed', routerLink: ['/suites'] },
       { label: 'Services', icon: 'fas fa-book' },
       { label: 'Account', icon: 'fas fa-user', routerLink: ['/user-account'] },
-      { label: 'Contact', icon: 'fas fa-envelope' }
+      { label: 'Contact', icon: 'fas fa-envelope', routerLink: ['/contact'] }
     ];
+  }
+
+  showDialog() {
+    this.display = true;
   }
 }
