@@ -10,10 +10,11 @@
     <p-tabMenu [model]="items"></p-tabMenu>
   </div>
 
+  <!-- user logged in -->
   <ng-template #authenticated>
-    <div class="user-name">
+    <div class="user-name" *ngIf="auth.user | async as user">
       <button mat-icon-button [matMenuTriggerFor]="menu">
-        Welcome, {{auth.user?.username}} &nbsp;
+        Welcome, {{user?.username}} &nbsp;
         <mat-icon>keyboard_arrow_down</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
@@ -38,11 +39,13 @@
     <!-- empty -->
   </div>
 
+  <!-- user not logged in -->
   <ng-template #guest>
     <div class="user-name">
-      <button (click)="auth.googleLogin()">
+      <button mat-stroked-button (click)="auth.googleLogin()">Login</button>
+      <!-- <button (click)="auth.googleLogin()">
         login
-      </button>
+      </button> -->
     </div>
   </ng-template>
 </div>

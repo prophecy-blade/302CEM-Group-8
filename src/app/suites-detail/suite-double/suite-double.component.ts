@@ -13,14 +13,14 @@ export class SuiteDoubleComponent implements OnInit {
   ngOnInit() {
     this.images = [];
     this.images.push({
-      source: 'assets/images/suites/room13.jpg',
+      source: 'assets/images/suites/double1.jpg',
       alt: 'Description for Image 1',
-      title: 'Title 1'
+      title: 'Double Room'
     });
     this.images.push({
-      source: 'assets/images/suites/room12.jpg',
+      source: 'assets/images/suites/double2.jpg',
       alt: 'Description for Image 1',
-      title: 'Title 1'
+      title: 'Double Room'
     });
   }
 }

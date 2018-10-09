@@ -13,14 +13,14 @@ export class SuiteSingleComponent implements OnInit {
   ngOnInit() {
     this.images = [];
     this.images.push({
-      source: 'assets/images/suites/room21.jpg',
+      source: 'assets/images/suites/single1.jpg',
       alt: 'Description for Image 1',
-      title: 'Title 1'
+      title: 'Single Room'
     });
     this.images.push({
-      source: 'assets/images/suites/room22.jpg',
+      source: 'assets/images/suites/single2.jpg',
       alt: 'Description for Image 1',
-      title: 'Title 1'
+      title: 'Single Room'
     });
   }
 }

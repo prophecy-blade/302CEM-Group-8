@@ -1,19 +1,28 @@
-<mat-card class="example-card">
-  <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title>Shiba Inu</mat-card-title>
-    <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-  <mat-card-content>
-    <p>
-      The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-      A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-      bred for hunting.
-    </p>
-  </mat-card-content>
-  <!-- <mat-card-actions>
-    <button mat-button>LIKE</button>
-    <button mat-button>SHARE</button>
-  </mat-card-actions> -->
-</mat-card>
+<div *ngIf="auth.user | async; then authenticated else guest">
+  <!-- template will replace this div -->
+</div>
+
+<ng-template #authenticated>
+  <div *ngIf="auth.user | async as user">
+
+    <mat-card class="example-card">
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{user?.username}}</mat-card-title>
+        <mat-card-subtitle>{{user?.email}}</mat-card-subtitle>
+      </mat-card-header>
+      <img mat-card-image [src]="user?.photo">
+      <mat-card-content>
+        <p>
+          Welcome to Hotel Transylvania!
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</ng-template>
+
+<ng-template #guest>
+  <h3>Welcome to Hotel Transylvania!</h3>
+  <p>Please login to get started</p>
+</ng-template>

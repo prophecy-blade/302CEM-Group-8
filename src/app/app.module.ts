@@ -100,6 +100,7 @@ import { UserBookingComponent } from './account-detail/user-booking/user-booking
       databaseURL: 'https://tclowdemo.firebaseio.com',
       projectId: 'tclowdemo'
     }),
+    
     CoreModule
   ],
   providers: [],
