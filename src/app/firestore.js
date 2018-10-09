@@ -34,7 +34,7 @@ const roomRef = firestore.collection("hotelsystem").doc("main_database").collect
 const bookingRef = firestore.collection("hotelsystem").doc("main_database").collection("booking");
 const stayRoomRef = firestore.collection("hotelsystem").doc("main_database").collection("booking").doc("inStay").collection("room");
 const recordRoomRef = firestore.collection("hotelsystem").doc("main_database").collection("booking").doc("record").collection("room");
-const payment = firestore.collection("hotelsystem").doc("main_database").collection("payment");
+const paymentRef = firestore.collection("hotelsystem").doc("main_database").collection("payment");
 
 //--------------------------------------------------
 //Sample
@@ -74,6 +74,24 @@ const payment = firestore.collection("hotelsystem").doc("main_database").collect
 //----------------------------------------------------------------------------
 //-----functions-----
 
+function generateId() {
+  //increment id
+}
+
+function getId(userId) {
+
+  userRef.where("id", "==" , userId).get().then(snapshot => {
+    var Data = []
+    snapshot.forEach(doc => {
+      var data = doc.data()
+      data.id = doc.id
+      Data.push(data);
+      // console.log(data);
+    });
+    console.log(Data);
+    return Data
+  })
+}
 function addSupervisor(supervisorId,firstName,lastName,gender,ic,email,phone) {
 
   supervisorRef.doc(supervisorId).set({
@@ -185,6 +203,21 @@ function deleteCustomer(customerId) {
   })
 }
 
+function getRoomType() {
+
+  roomRef.get().then(snapshot => {
+    var Data = []
+    snapshot.forEach(doc => {
+      var data = doc.data()
+      data.id = doc.id
+      Data.push(data);
+      // console.log(data);
+    });
+    console.log(Data);
+    return Data
+  })
+}
+
 function addRoom(roomId,roomType,roomDescription,bedCount,MinBedCount,MaxBedCount,roomPrice,supervisorId,hotelDeskPersonnelId) {
   //valid roomId,supervisorId,hotelDeskPersonnelId
   roomRef.doc(rommId).set({
@@ -219,19 +252,36 @@ function deleteRoom(roomId) {
     console.log("Room "+ roomId+ " has been removed successfully.")
   })
 }
+ function getBookingRoom() {
+  stayRoomRef.get().then(snapshot => {
+    var Data = []
+    snapshot.forEach(doc => {
+      var data = doc.data()
+      data.id = doc.id
+      Data.push(data);
+      // console.log(data);
+    });
+    console.log(Data);
+    return Data
+  })
+ }
 
-function resevationRoom(roomId,customerId) {
+function resevationRoom(roomId,customerId,roomType) {
   //valid roomId avalaible
-  stayRoomRef.doc(roomId).set({
-    checkInDate: new Date(),
-    checkInBy: "",
-    customerId: customerId,
-    totalAmount: "",
-    status: "booking"
-  }).then((data) => {
-    // Document created successfully.
-    console.log("Room "+roomId+" has been booked successfully by "+customerId);
-  });
+  roomRef.doc(roomType).get().then(data => {
+    var amount = data.data().price;
+
+    stayRoomRef.doc(roomId).set({
+      checkInDate: new Date(),
+      checkInBy: "",
+      customerId: customerId,
+      totalAmount: amount,
+      status: "booking"
+    }).then((data) => {
+      // Document created successfully.
+      console.log("Room "+roomId+" has been booked successfully by "+customerId);
+    });
+  }) 
 }
 
 function cancelResevationRoom(roomId,customerId) {
@@ -241,7 +291,7 @@ function cancelResevationRoom(roomId,customerId) {
   })
 }
 
-function adminAddRoom(roomId,customerId,adminId) {
+function adminAddRoom(roomId,customerId,adminId) { //resevation
 
   stayRoomRef.doc(roomId).set({
     checkInDate: new Date(),
@@ -253,7 +303,7 @@ function adminAddRoom(roomId,customerId,adminId) {
   })
 }
 
-function adminEditRoom(roomId,customerId,adminId) {
+function adminEditRoom(roomId,customerId,adminId) { //resevation
 
   stayRoomRef.doc(roomId).update({
     checkInDate: new Date(),
@@ -265,19 +315,39 @@ function adminEditRoom(roomId,customerId,adminId) {
   })
 }
 
-function adminDeleteRoom(roomId) {
+function adminDeleteRoom(roomId) { //resevation
 
   stayRoomRef.doc(roomId).delete().then((data)=> {
     console.log("admin successfully delete room "+roomId);
   })
 }
 
-function addToRecord() {
+function checkOut(roomId,customerId,workerId) {
+
+  stayRoomRef.doc(roomId).update({
+    checkOutDate: new Date(),
+    checkOutBy: workerId,
+  }).then(data => {
+    console.log("Customer successfully checkout");
+    stayRoomRef.doc(roomId).get().then(data=> {
+      var id = data.id
+      var data = data.data();
+      console.log(data.checkInDate);
+    })
+  })
+}
+
+function addToRecord(data,id) {
   // get data ->validate->add
+  recordRoomRef.doc(id).set({
+    data
+  })
 }
 
 
 //--------------------------------------------------------------------------------
+//-----TESTING-----
+// getId("")
 //add dummy room type
 // roomRef.doc("T009").set({
 //   type: "party",
@@ -293,9 +363,34 @@ function addToRecord() {
 // }).then((data)=> {
 //   console.log("Room has been added successfully.")
 // })
+// customerRef.doc("blabla2").set({
+//   firstName: "bla",
+//   lastName: "bla2",
+//   gender: "male",
+//   ic: "131313-13-1313",
+//   email: "blabla@gmail.com",
+//   phone: "012-1234567",
+//   nationality: "abc",
+//   city: "def",
+//   state: "ghi"
+// }).then((data)=> {
+//   console.log("Customer "+ "blabla1"+" has been added");
+// })
+
+// customerRef.where("gender", "==" , "male").get().then(snapshot => {
+//   var Data = []
+//   snapshot.forEach(doc => {
+//     var data = doc.data()
+//     data.id = doc.id
+//     Data.push(data);
+//     console.log(data);
+//   });
+//   console.log(Data);
+// })
 //-----------------------------------------------------------------
 //-----exports-----
 module.exports = {
+  getId,
   addSupervisor,
   editSupervisor,
   deleteSupervisor,
@@ -305,13 +400,16 @@ module.exports = {
   addCustomer,
   editCustomer,
   deleteCustomer,
+  getRoomType,
   addRoom,
   editRoom,
   deleteRoom,
+  getBookingRoom,
   resevationRoom,
   cancelResevationRoom,
   adminAddRoom,
   adminEditRoom,
-  adminDeleteRoom
+  adminDeleteRoom,
+  checkOut
 };
 //import { xxx } from 'this file'
