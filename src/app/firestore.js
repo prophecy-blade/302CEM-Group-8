@@ -252,6 +252,19 @@ function deleteRoom(roomId) {
     console.log("Room "+ roomId+ " has been removed successfully.")
   })
 }
+ function getBookingRoom() {
+  stayRoomRef.get().then(snapshot => {
+    var Data = []
+    snapshot.forEach(doc => {
+      var data = doc.data()
+      data.id = doc.id
+      Data.push(data);
+      // console.log(data);
+    });
+    console.log(Data);
+    return Data
+  })
+ }
 
 function resevationRoom(roomId,customerId,roomType) {
   //valid roomId avalaible
