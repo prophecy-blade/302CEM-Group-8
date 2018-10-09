@@ -404,6 +404,7 @@ module.exports = {
   addRoom,
   editRoom,
   deleteRoom,
+  getBookingRoom,
   resevationRoom,
   cancelResevationRoom,
   adminAddRoom,
