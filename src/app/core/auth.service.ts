@@ -42,7 +42,6 @@ export class AuthService {
 
   user: Observable<User>;
 
-
   constructor(
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
@@ -84,11 +83,9 @@ export class AuthService {
       photo: user.photoURL
     }
 
-    console.log(data);
-    return userRef.set(data, { merge: true })
-
+    //console.log(data);
+    return userRef.set(data, { merge: true });
   }
-
 
   signOut() {
     this.afAuth.auth.signOut().then(() => {
