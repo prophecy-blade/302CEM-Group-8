@@ -1,41 +1,52 @@
 <body class="contact">
-  <h1>Contact Us</h1>
-
-  <div class="ui-g ui-fluid">
-    <div class="ui-g-12 ui-md-6">
+  <div class="contact-info">
+    <div class="contact-form">
+      <h2>Contact Us</h2>
       <div class="ui-inputgroup">
         <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
         <input type="text" pInputText placeholder="Name">
       </div>
-    </div>
 
-    <div class="ui-g-12 ui-md-6">
       <div class="ui-inputgroup">
         <span class="ui-inputgroup-addon"><i class="fa fa-phone"></i></span>
         <input type="text" pInputText placeholder="Phone Number">
       </div>
-    </div>
-  </div>
 
-  <div class="ui-g ui-fluid">
-    <div class="ui-g-12 ui-md-12">
       <div class="ui-inputgroup">
         <span class="ui-inputgroup-addon"><i class="fa fa-envelope"></i></span>
         <input type="text" pInputText placeholder="Email">
       </div>
-    </div>
-  </div>
 
-  <div class="ui-g ui-fluid">
-    <div class="ui-g-12 ui-md-12">
       <div class="ui-inputgroup">
         <span class="ui-inputgroup-addon"><i class="fa fa-comments"></i></span>
         <textarea rows="5" cols="30" pInputTextarea placeholder="Message"></textarea>
       </div>
+
+      <div class="contact-btn">
+        <button mat-raised-button>Send</button>
+      </div>
+
     </div>
+
+    <mat-card class="contact-card">
+      <mat-card-header>
+        <div mat-card-avatar><i class="fas fa-hotel"></i></div>
+        <mat-card-title>About Us</mat-card-title>
+        <mat-card-subtitle>The Transylvania</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          Admin:
+          <br>
+          Email:
+          <br>
+          Contact Number:
+          <br>
+          Address:
+          <br>
+        </p>
+      </mat-card-content>
+    </mat-card>
   </div>
 
-  <div class="contact-btn">
-    <button mat-raised-button>Send</button>
-  </div>
 </body>

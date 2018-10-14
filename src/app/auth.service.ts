@@ -85,8 +85,6 @@ export class AuthService {
       role: 'customer'
     };
 
-    return userRef.set(data, { merge: true });
-
     let db = this.database;
     let t = this;
     let verify = false;
@@ -131,5 +129,6 @@ export class AuthService {
         }
       });
     //this.verifyUserRole(data);
+    return userRef.set(data, { merge: true });
   }
 }
