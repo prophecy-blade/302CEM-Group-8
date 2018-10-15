@@ -260,7 +260,7 @@ export class DatabaseService {
     })
   }
 
-  addRoom(roomId,roomType,roomDescription,bedCount,MinBedCount,MaxBedCount,roomPrice,supervisorId,hotelDeskPersonnelId) {
+  addRoom(roomId,roomType,roomDescription,bedCount:number,MinBedCount:number,MaxBedCount:number,roomPrice:number,supervisorId,hotelDeskPersonnelId) {
     //valid roomId,supervisorId,hotelDeskPersonnelId
     this.roomRef.doc(roomId).set({
       type: roomType,
@@ -274,7 +274,7 @@ export class DatabaseService {
     })
   }
 
-  editRoom(roomId,roomType,roomDescription,bedCount,MinBedCount,MaxBedCount,roomPrice) {
+  editRoom(roomId,roomType,roomDescription,bedCount:number,MinBedCount:number,MaxBedCount:number,roomPrice:number) {
     //valid roomId,supervisorId,hotelDeskPersonnelId
     this.roomRef.doc(roomId).update({
       type: roomType,
