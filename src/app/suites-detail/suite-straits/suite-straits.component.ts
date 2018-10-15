@@ -13,12 +13,14 @@ export class SuiteStraitsComponent implements OnInit {
     this.images = [];
     this.images.push({
       source: 'assets/images/suites/strait1.jpg',
-      alt: 'Description for Image 1',
+      alt:
+        'The Straits Room exudes the hotel elegance and timeless style. Tastefully furnished in art deco style and accented by rich fabrics and materials, each room comes with thoughtful amenities and a beautifully appointed colonial style black and white tiled bathroom. ',
       title: 'Straits'
     });
     this.images.push({
       source: 'assets/images/suites/strait2.jpg',
-      alt: 'Description for Image 1',
+      alt:
+        'The Straits Room exudes the hotel elegance and timeless style. Tastefully furnished in art deco style and accented by rich fabrics and materials, each room comes with thoughtful amenities and a beautifully appointed colonial style black and white tiled bathroom. ',
       title: 'Straits'
     });
   }

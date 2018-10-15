@@ -14,12 +14,14 @@ export class SuiteDoubleComponent implements OnInit {
     this.images = [];
     this.images.push({
       source: 'assets/images/suites/double1.jpg',
-      alt: 'Description for Image 1',
+      alt:
+        'A bigger version of single room which contains double size bed and and the facilities as well are bigger size which are suitable for couple to stay in.',
       title: 'Double Room'
     });
     this.images.push({
       source: 'assets/images/suites/double2.jpg',
-      alt: 'Description for Image 1',
+      alt:
+        'A bigger version of single room which contains double size bed and and the facilities as well are bigger size which are suitable for couple to stay in.',
       title: 'Double Room'
     });
   }

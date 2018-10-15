@@ -1,19 +1,53 @@
 .contact {
   margin-left: 80px;
   margin-right: 80px;
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 .ui-inputgroup {
   height: 40px;
+  margin-bottom: 40px;
+  margin-right: 50px;
+}
+
+.ui-inputgroup .ui-inputtext {
+  width: 600px;
 }
 
 .contact-btn {
-  margin-top: 250px;
+  margin-top: 100px;
 }
 
 .mat-raised-button {
   background-color: black;
   color: white;
+}
+
+.contact-info {
+  display: flex;
+  margin-top: 30px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-card {
+  width: 700px;
+  height: 530px;
+  background-color: black;
+  color: gold;
+}
+
+h2 {
+  padding: 0;
+  margin: 0;
+}
+
+.contact-detail {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 20px;
+  color: gold;
 }

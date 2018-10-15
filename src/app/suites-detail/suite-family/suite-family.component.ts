@@ -13,12 +13,14 @@ export class SuiteFamilyComponent implements OnInit {
     this.images = [];
     this.images.push({
       source: 'assets/images/suites/family1.jpg',
-      alt: 'Description for Image 1',
+      alt:
+        'A room which has bigger space for bigger group to use and also has 3 beds which are 1 double size bed and two single size bed, suitable for a group of people or a family.',
       title: 'Family Room'
     });
     this.images.push({
       source: 'assets/images/suites/family2.jpg',
-      alt: 'Description for Image 1',
+      alt:
+        'A room which has bigger space for bigger group to use and also has 3 beds which are 1 double size bed and two single size bed, suitable for a group of people or a family.',
       title: 'Family Room'
     });
   }
