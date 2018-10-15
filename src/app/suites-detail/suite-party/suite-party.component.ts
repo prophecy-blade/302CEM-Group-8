@@ -13,12 +13,14 @@ export class SuitePartyComponent implements OnInit {
     this.images = [];
     this.images.push({
       source: 'assets/images/suites/party1.jpg',
-      alt: 'Description for Image 1',
+      alt:
+        'A room for a bigger pack of people to stay in, which provide multiple beds and huge capacity of space for you and your friends or family to enjoy.',
       title: 'Party Room'
     });
     this.images.push({
       source: 'assets/images/suites/party2.jpg',
-      alt: 'Description for Image 1',
+      alt:
+        'A room for a bigger pack of people to stay in, which provide multiple beds and huge capacity of space for you and your friends or family to enjoy.',
       title: 'Party Room'
     });
   }

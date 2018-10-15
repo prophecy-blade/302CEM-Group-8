@@ -14,12 +14,14 @@ export class SuiteDeluxeComponent implements OnInit {
     this.images = [];
     this.images.push({
       source: 'assets/images/suites/deluxe1.jpg',
-      alt: 'Deluxe Room',
+      alt:
+        'Deluxe Rooms offer abundant comfort and privacy, with a full array of amenities for a productive and relaxing stay.',
       title: 'Deluxe Room'
     });
     this.images.push({
       source: 'assets/images/suites/deluxe2.jpg',
-      alt: 'Deluxe Room',
+      alt:
+        'Deluxe Rooms offer abundant comfort and privacy, with a full array of amenities for a productive and relaxing stay.',
       title: 'Deluxe Room'
     });
   }
