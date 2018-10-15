@@ -323,23 +323,35 @@ function adminDeleteRoom(roomId) { //resevation
 }
 
 function checkOut(roomId,customerId,workerId) {
-
-  stayRoomRef.doc(roomId).update({
-    checkOutDate: new Date(),
-    checkOutBy: workerId,
-  }).then(data => {
-    console.log("Customer successfully checkout");
-    stayRoomRef.doc(roomId).get().then(data=> {
-      var id = data.id
-      var data = data.data();
-      console.log(data.checkInDate);
-    })
+  stayRoomRef.doc(roomId).get().then(data_origin=> {
+    var id = data_origin.id;
+    var Data = data_origin.data();
+    console.log(Data.customerId);
+    console.log(customerId);
+    if (customerId == Data.customerId) {
+      stayRoomRef.doc(roomId).update({
+        checkOutDate: new Date(),
+        checkOutBy: workerId,
+        status: "checkOut"
+      }).then(data => {
+        console.log("Customer successfully checkout");
+        stayRoomRef.doc(roomId).get().then(data=> {
+          var id = data.id
+          var Data = data.data();
+          console.log(Data);
+        })
+      })
+    }
+    else {
+      console.log("no valid");
+    }
   })
 }
+// checkOut("1001","blabla1","test")
 
 function addToRecord(data,id) {
   // get data ->validate->add
-  recordRoomRef.doc(id).set({
+  recordRoomRef.set({
     data
   })
 }
@@ -410,6 +422,7 @@ module.exports = {
   adminAddRoom,
   adminEditRoom,
   adminDeleteRoom,
-  checkOut
+  checkOut,
+  addToRecord
 };
 //import { xxx } from 'this file'

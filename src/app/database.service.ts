@@ -365,17 +365,28 @@ export class DatabaseService {
   }
 
   checkOut(roomId,customerId,workerId) {
-
-    this.stayRoomRef.doc(roomId).update({
-      checkOutDate: new Date(),
-      checkOutBy: workerId,
-    }).then(data => {
-      console.log("Customer successfully checkout");
-      this.stayRoomRef.doc(roomId).get().then(data=> {
-        var id = data.id
-        var Data = data.data();
-        console.log(Data.checkInDate);
-      })
+    this.stayRoomRef.doc(roomId).get().then(data_origin=> {
+      var id = data_origin.id;
+      var Data = data_origin.data();
+      console.log(Data.customerId);
+      console.log(customerId);
+      if (customerId == Data.customerId) {
+        this.stayRoomRef.doc(roomId).update({
+          checkOutDate: new Date(),
+          checkOutBy: workerId,
+          status: "checkOut"
+        }).then(data => {
+          console.log("Customer successfully checkout");
+          this.stayRoomRef.doc(roomId).get().then(data=> {
+            var id = data.id
+            var Data = data.data();
+            console.log(Data);
+          })
+        })
+      }
+      else {
+        console.log("no valid");
+      }
     })
   }
 
