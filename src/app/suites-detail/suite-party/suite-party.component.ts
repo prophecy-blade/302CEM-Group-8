@@ -12,12 +12,12 @@ export class SuitePartyComponent implements OnInit {
   ngOnInit() {
     this.images = [];
     this.images.push({
-      source: 'assets/images/suites/family1.jpg',
+      source: 'assets/images/suites/party1.jpg',
       alt: 'Description for Image 1',
       title: 'Party Room'
     });
     this.images.push({
-      source: 'assets/images/suites/family2.jpg',
+      source: 'assets/images/suites/party2.jpg',
       alt: 'Description for Image 1',
       title: 'Party Room'
     });
