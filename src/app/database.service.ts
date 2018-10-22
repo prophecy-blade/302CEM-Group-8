@@ -475,15 +475,35 @@ export class DatabaseService {
 
   cancelResevationRoom(roomId,customerId) {
     //valid roomId
-    this.stayRoomRef.doc(roomId).update({
-      // checkInDate: new Date(),
-      // checkInBy: "",
-      customerId: customerId,
-      status: "Cancelled"
-    }).then((data) => {
-      // Document created successfully.
-      console.log("Room "+roomId+" has been cancelled by "+customerId);
-    });
+    this.stayRoomRef.doc(roomId).get().then(data => {
+      var id = data.id;
+      var Data = data.data();
+      console.log(id);
+      console.log(Data);
+      if (Data == undefined || Data.status != "Booking") {
+        console.log("room not found or not Available");
+      }
+      else {
+        this.customerRef.doc(customerId).get().then(customerData => {
+          var cId = customerData.id
+          var cData = customerData.data();
+          console.log(cId);
+          console.log(cData);
+          if (cData != undefined && Data.customerId == customerId) {
+            this.stayRoomRef.doc(roomId).update({
+              status: "Cancelled"
+            }).then((data) => {
+              // Document created successfully.
+              console.log("Room "+roomId+" has been cancelled by "+customerId);
+            });
+  
+          }
+          else {
+            console.log("Invalid customer id");
+          }
+        })
+      }
+    })
   }
 
   adminAddRoom(roomId,adminId) { //resevation

@@ -461,10 +461,37 @@ function deleteRoom(roomId) {
 
 function cancelResevationRoom(roomId,customerId) {
   //valid roomId
-  stayRoomRef.doc(roomId).delete().then((data) => {
-    console.log(("Room "+roomId+" have been cancelled successfully."))
+  stayRoomRef.doc(roomId).get().then(data => {
+    var id = data.id;
+    var Data = data.data();
+    console.log(id);
+    console.log(Data);
+    if (Data == undefined || Data.status != "Booking") {
+      console.log("room not found or not Available");
+    }
+    else {
+      customerRef.doc(customerId).get().then(customerData => {
+        var cId = customerData.id
+        var cData = customerData.data();
+        console.log(cId);
+        console.log(cData);
+        if (cData != undefined && Data.customerId == customerId) {
+          stayRoomRef.doc(roomId).update({
+            status: "Cancelled"
+          }).then((data) => {
+            // Document created successfully.
+            console.log("Room "+roomId+" has been cancelled by "+customerId);
+          });
+
+        }
+        else {
+          console.log("Invalid customer id");
+        }
+      })
+    }
   })
 }
+// cancelResevationRoom("1002","blabla1")
 
 function adminAddRoom(roomId,customerId,adminId) { //resevation
 
