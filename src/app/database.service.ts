@@ -435,7 +435,7 @@ export class DatabaseService {
   //   })
   // }
 
-  resevationRoom(roomId,customerId, startStayDate, days) {
+  resevationRoom(roomId,customerId, startStayDate,endStayDate, days) {
     //valid roomId avalaible
     this.stayRoomRef.doc(roomId).get().then(data => {
       var id = data.id;
@@ -459,6 +459,7 @@ export class DatabaseService {
             this.stayRoomRef.doc(roomId).update({
               bookingDate: new Date(),
               startStayDate: startStayDate,
+              endStayDate: endStayDate,
               dayStay: days,
               customerId: customerId,
               totalAmount: totalAmount,
@@ -509,10 +510,10 @@ export class DatabaseService {
   adminAddRoom(roomId,adminId) { //resevation
 
     this.stayRoomRef.doc(roomId).set({
-      checkInDate: new Date(),
+      addDate: new Date(),
       roomAddBy: adminId,
       // customerId: customerId,
-      totalAmount: ""
+      // totalAmount: ""
     }).then((data)=> {
       console.log("admin successfully added room "+roomId+" with customer");
     })
@@ -521,10 +522,10 @@ export class DatabaseService {
   adminEditRoom(roomId,adminId) { //resevation
     //need valid 
     this.stayRoomRef.doc(roomId).update({
-      checkInDate: new Date(),
+      editDate: new Date(),
       editBy: adminId,
       // customerId: customerId,
-      totalAmount: ""
+      // totalAmount: ""
     }).then((data)=> {
       console.log("admin successfully update room "+roomId);
     })
@@ -576,7 +577,7 @@ export class DatabaseService {
       }
     })
   }
-
+  //not use
   addToRecord(data,id) {
     // get data ->validate->add
     this.recordRoomRef.doc(id).set({
