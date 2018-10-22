@@ -74,9 +74,35 @@ const paymentRef = firestore.collection("hotelsystem").doc("main_database").coll
 //----------------------------------------------------------------------------
 //-----functions-----
 
-function generateId() {
-  //increment id
-}
+// function generaterecordNo() {
+//   // return new Promise(function (resolve, reject) {
+//     recordRoomRef.orderBy("recordNo","desc").limit(1).get().then(snapshot=> {
+//       // var Data = data.data();
+//       var Data = []
+//       snapshot.forEach(doc=> {
+//         var data = doc.data()
+//         data.id = doc.id
+//         Data.push(data);
+//       })
+//       console.log(Data);
+//       console.log(Data[0].recordNo)
+//       if (Data.length > 0) {
+//         console.log(">0");
+//         // console.log((parseInt(Data[0].id)+1).toString().padStart(4, "0"))
+//         return ((parseInt(Data[0].id)+1).toString().padStart(4, "0"))
+//         // console.log(recordNo)
+        
+//       }
+//       else {
+//         console.log("1");
+//         return "0001"
+//       }
+//       // return recordNo
+//       // resolve(recordNo)
+//     })
+//   // })
+// }
+// // generaterecordNo()
 
 function getId(userId) {
 
@@ -92,6 +118,7 @@ function getId(userId) {
     return Data
   })
 }
+
 function addSupervisor(supervisorId,firstName,lastName,gender,ic,email,phone) {
 
   supervisorRef.doc(supervisorId).set({
@@ -218,6 +245,133 @@ function getRoomType() {
   })
 }
 
+function getInstayRoom() { //all
+
+  stayRoomRef.get().then(snapshot => {
+    var Data = []
+    snapshot.forEach(doc => {
+      var data = doc.data()
+      data.id = doc.id
+      Data.push(data);
+      // console.log(data);
+    });
+    console.log(Data);
+    return Data
+  })
+}
+// getInstayRoom()
+
+function getInstayRoomFilter(personCount) {
+  if (personCount > 0) {
+    if (personCount >= 1) {
+      console.log("Single,Straits");
+      var t = "S"
+    }
+    if (personCount >= 2) {
+      console.log("Double,Deluxe");
+      var t = "D"
+    }
+    if (personCount >= 3) {
+      console.log("Family");
+      var t ="F"
+    }
+    if (personCount >= 5) {
+      console.log("Party");
+      var t = "P"
+    }
+    if (t == "S") {
+      var Datas = []
+      stayRoomRef.where("type", "==" , "Single").get().then(snapshot => {
+        var Data = []
+        snapshot.forEach(doc => {
+          var data = doc.data()
+          data.id = doc.id
+          Data.push(data);
+          // console.log(data);
+        });
+        // console.log(Data);
+        // return Data
+        stayRoomRef.where("type", "==" , "Straits").get().then(snapshot => {
+          // var Data = []
+          snapshot.forEach(doc => {
+            var data = doc.data()
+            data.id = doc.id
+            Data.push(data);
+            // console.log(data);
+          });
+          console.log(Data);
+          return Data
+        })
+      })
+    }
+    if (t == "D") {
+      var Datas = []
+      stayRoomRef.where("type", "==" , "Double").get().then(snapshot => {
+        var Data = []
+        snapshot.forEach(doc => {
+          var data = doc.data()
+          data.id = doc.id
+          Data.push(data);
+          // console.log(data);
+        });
+        // console.log(Data);
+        // return Data
+        stayRoomRef.where("type", "==" , "Deluxe").get().then(snapshot => {
+          // var Data = []
+          snapshot.forEach(doc => {
+            var data = doc.data()
+            data.id = doc.id
+            Data.push(data);
+            // console.log(data);
+          });
+          console.log(Data);
+          return Data
+        })
+      })
+    }
+    if (t == "F") {
+      stayRoomRef.where("type", "==" , "Family").get().then(snapshot => {
+        var Data = []
+        snapshot.forEach(doc => {
+          var data = doc.data()
+          data.id = doc.id
+          Data.push(data);
+          // console.log(data);
+        });
+        console.log(Data);
+        return Data
+      })
+    }
+    if (t == "P") {
+      stayRoomRef.where("type", "==" , "Party").get().then(snapshot => {
+        var Data = []
+        snapshot.forEach(doc => {
+          var data = doc.data()
+          data.id = doc.id
+          Data.push(data);
+          // console.log(data);
+        });
+        console.log(Data);
+        return Data
+      })
+    }
+  }
+  else {
+    stayRoomRef.get().then(snapshot => { //all
+      var Data = []
+      snapshot.forEach(doc => {
+        var data = doc.data()
+        data.id = doc.id
+        Data.push(data);
+        // console.log(data);
+      });
+      console.log(Data);
+      return Data
+    })
+  }
+}
+// getInstayRoomFilter(1)
+
 function addRoom(roomId,roomType,roomDescription,bedCount,MinBedCount,MaxBedCount,roomPrice,supervisorId,hotelDeskPersonnelId) {
   //valid roomId,supervisorId,hotelDeskPersonnelId
   roomRef.doc(rommId).set({
@@ -266,23 +420,44 @@ function deleteRoom(roomId) {
   })
  }
 
-function resevationRoom(roomId,customerId,roomType) {
+ function resevationRoom(roomId,customerId, startStayDate, days) {
   //valid roomId avalaible
-  roomRef.doc(roomType).get().then(data => {
-    var amount = data.data().price;
-
-    stayRoomRef.doc(roomId).set({
-      checkInDate: new Date(),
-      checkInBy: "",
-      customerId: customerId,
-      totalAmount: amount,
-      status: "booking"
-    }).then((data) => {
-      // Document created successfully.
-      console.log("Room "+roomId+" has been booked successfully by "+customerId);
-    });
-  }) 
+  stayRoomRef.doc(roomId).get().then(data => {
+    var id = data.id;
+    var Data = data.data();
+    console.log(id);
+    console.log(Data);
+    if (Data == undefined || Data.status != "Available") {
+      console.log("room not found or not Available");
+    }
+    else {
+      customerRef.doc(customerId).get().then(customerData => {
+        var cId = customerData.id
+        var cData = customerData.data();
+        console.log(cId);
+        console.log(cData);
+        if (cData == undefined) {
+          console.log("Invalid customer id");
+        }
+        else {
+          var totalAmount = Data.amount * parseInt(days);
+          stayRoomRef.doc(roomId).update({
+            bookingDate: new Date(),
+            startStayDate: startStayDate,
+            dayStay: days,
+            customerId: customerId,
+            totalAmount: totalAmount,
+            status: "Booking"
+          }).then((data) => {
+            // Document created successfully.
+            console.log("Room "+roomId+" has been booked successfully by "+customerId);
+          });
+        }
+      })
+    }
+  })
 }
+// resevationRoom("1002","blabla","DateTime",2)
 
 function cancelResevationRoom(roomId,customerId) {
   //valid roomId
@@ -295,7 +470,7 @@ function adminAddRoom(roomId,customerId,adminId) { //resevation
 
   stayRoomRef.doc(roomId).set({
     checkInDate: new Date(),
-    checkInBy: adminId,
+    roomAddBy: adminId,
     customerId: customerId,
     totalAmount: ""
   }).then((data)=> {
@@ -307,7 +482,7 @@ function adminEditRoom(roomId,customerId,adminId) { //resevation
 
   stayRoomRef.doc(roomId).update({
     checkInDate: new Date(),
-    checkInBy: adminId,
+    editBy: adminId,
     customerId: customerId,
     totalAmount: ""
   }).then((data)=> {
@@ -328,17 +503,31 @@ function checkOut(roomId,customerId,workerId) {
     var Data = data_origin.data();
     console.log(Data.customerId);
     console.log(customerId);
-    if (customerId == Data.customerId) {
+    if (customerId == Data.customerId && Data.status == "inStay") {
       stayRoomRef.doc(roomId).update({
         checkOutDate: new Date(),
         checkOutBy: workerId,
-        status: "checkOut"
+        status: "checkout"
       }).then(data => {
         console.log("Customer successfully checkout");
         stayRoomRef.doc(roomId).get().then(data=> {
           var id = data.id
           var Data = data.data();
           console.log(Data);
+          // var recordNo = generaterecordNo()
+          // console.log(recordNo)
+          recordRoomRef.add({
+            roomId: roomId,
+            cusstomerId: Data.customerId,
+            checkInBy: Data.checkInBy,
+            checkInDate: Data.checkInDate,
+            checkOutBy: Data.checkOutBy,
+            checkOutDate: Data.checkOutDate,
+            totalAmount: Data.totalAmount,
+          }).then(record => {
+            console.log("Data successfully recorded");
+            //reset
+          })
         })
       })
     }
