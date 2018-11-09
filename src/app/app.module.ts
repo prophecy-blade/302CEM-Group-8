@@ -9,6 +9,8 @@ import { AngularFireModule } from '@angular/fire';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
 
+import { FirestoreService } from './firestore.service';
+
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
@@ -103,7 +105,7 @@ import { UserBookingComponent } from './account-detail/user-booking/user-booking
     
     CoreModule
   ],
-  providers: [],
+  providers: [ FirestoreService ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
