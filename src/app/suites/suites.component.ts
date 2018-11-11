@@ -1,5 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { AuthService } from '../core/auth.service';
+// import { Http, Response } from '@angular/http';
+// import { DatabaseService } from '../database.service';
+// import { database } from 'firebase';
 
 export interface TotalAdults {
   value: number;
@@ -15,9 +18,12 @@ export interface TotalChildrens {
   selector: 'app-suites',
   templateUrl: './suites.component.html',
   styleUrls: ['./suites.component.css']
+  // providers: [DatabaseService]
 })
 export class SuitesComponent implements OnInit {
-  constructor() {}
+  constructor(public auth: AuthService) {
+    console.log(auth.user);
+  }
   ngOnInit() {}
 
   totalAdults: TotalAdults[] = [
@@ -31,6 +37,19 @@ export class SuitesComponent implements OnInit {
     { value: 1, viewValue: 1 },
     { value: 2, viewValue: 2 }
   ];
+
+  // getAllRoom() {
+  //   this.databaseService
+  //     .getBookingRoom()
+  //     .then((data: any) => {
+  //       if (data) {
+  //         console.log(data);
+  //       }
+  //     })
+  //     .catch((error: any) => {
+  //       console.log(error);
+  //     });
+  // }
 
   display: boolean = false;
 

@@ -47,6 +47,8 @@ import { SuiteSingleComponent } from './suites-detail/suite-single/suite-single.
 import { AccountDetailComponent } from './account-detail/account-detail.component';
 import { UserInfoComponent } from './account-detail/user-info/user-info.component';
 import { UserBookingComponent } from './account-detail/user-booking/user-booking.component';
+import { database } from 'firebase';
+// import { DatabaseService } from './database.service';
 
 @NgModule({
   declarations: [
@@ -100,7 +102,7 @@ import { UserBookingComponent } from './account-detail/user-booking/user-booking
       databaseURL: 'https://tclowdemo.firebaseio.com',
       projectId: 'tclowdemo'
     }),
-    
+
     CoreModule
   ],
   providers: [],
