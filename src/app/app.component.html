@@ -15,7 +15,7 @@
     <div class="navigation-bar" *ngIf="auth.user | async as user">
 
       <!-- check for role (admin/front-desk) tabmenu -->
-      <div *ngIf="user.role=='admin' || user.role=='front-desk';else normalUser">
+      <div *ngIf="user.role=='Admin' || user.role=='front-desk';else normalUser">
         <p-tabMenu [model]="adminItems"></p-tabMenu>
       </div>
 
