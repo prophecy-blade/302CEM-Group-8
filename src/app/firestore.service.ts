@@ -5,11 +5,79 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 // import { Firestore } from 'firebase/firestore';
 import * as firebase from 'firebase';
 
-interface Room {
+interface User {
   description: String;
   price: Number;
   type: String;
 }
+interface Supervisor {
+  firstName: string,
+  lastName: string,
+  gender: string,
+  ic: string,
+  email: string,
+  phone: string
+}
+interface Worker {
+  firstName: string,
+  lastName: string,
+  gender: string,
+  ic: string,
+  email: string,
+  phone: string
+}
+interface Customer {
+  firstName: string,
+  lastName: string,
+  gender: string,
+  ic: string,
+  email: string,
+  phone: string,
+  nationality: string,
+  city: string,
+  state: string
+}
+interface Room {
+  roomId: string,
+  bookingDate: Date,
+  startStayDate: Date,
+  dayStay: number,
+  customerId: string,
+  totalAmount: number,
+  status: string,
+  addDate: Date,
+  roomAddBy: string,
+  checkInBy: string,
+  checkInDate: Date,
+  checkOutDate: Date,
+  checkOutBy: string,
+  editBy: string,
+}
+interface RoomType {
+  type: string,
+  description: string,
+  bedCount: number,
+  MinBedCount: number,
+  MaxBedCount: number,
+  price: number
+}
+interface RecordRoom {
+  roomId: string,
+  customerId: string,
+  checkInBy: string,
+  checkInDate: Date,
+  checkOutBy: string,
+  checkOutDate: Date,
+  totalAmount: number,
+  bookingDate: Date,
+  startStayDate: Date,
+  dayStay: number,
+  status: string,
+  addDate: Date,
+  roomAddBy: string,
+  editBy: string
+}
+
 
 firebase.initializeApp({
   apiKey: "AIzaSyBr71V5ZUPDcx6CusFJWPZ52gwRa8DlgSA",
@@ -26,7 +94,14 @@ database.settings({
 @Injectable()
 
 export class FirestoreService {
+  private userRef: AngularFirestoreCollection<User>;
+  private supervisorRef: AngularFirestoreCollection<Supervisor>;
+  private workerRef: AngularFirestoreCollection<Worker>;
+  private customerRef: AngularFirestoreCollection<Customer>;
+  private roomRef: AngularFirestoreCollection<RoomType>;
   private stayRoomRef: AngularFirestoreCollection<Room>;
+  private recordRoomRef: AngularFirestoreCollection<Room>;
+  // private paymentRef: AngularFirestoreCollection<Payment>;
 
   // room: AngularFirestoreDocument<Room>;
   constructor(
@@ -34,15 +109,15 @@ export class FirestoreService {
     // private afd: AngularFirestoreDocument,
     // private afc: AngularFirestoreCollection
   ) { 
-    const userRef = database.collection("users");
-const supervisorRef = database.collection("hotelsystem").doc("main_database").collection("supervisor");
-const workerRef = database.collection("hotelsystem").doc("main_database").collection("hotelDeskPersonnel");
-const customerRef = database.collection("hotelsystem").doc("main_database").collection("customer");
-const roomRef = database.collection("hotelsystem").doc("main_database").collection("room");
-const bookingRef = database.collection("hotelsystem").doc("main_database").collection("booking");
-this.stayRoomRef = afs.collection<Room>("hotelsystem").doc("main_database").collection("booking").doc("inStay").collection("room");
-const recordRoomRef = database.collection("hotelsystem").doc("main_database").collection("booking").doc("record").collection("room");
-const paymentRef = database.collection("hotelsystem").doc("main_database").collection("payment");
+    this.userRef = afs.collection<User>("users");
+    this.supervisorRef = afs.collection<Supervisor>("supervisor");
+    this.workerRef = afs.collection<Worker>("hotelDeskPersonnel");
+    this.customerRef = afs.collection<Customer>("customer");
+    this.roomRef = afs.collection<RoomType>("roomType");
+    // this.bookingRef = afs.collection<Booking>("booking");
+    this.stayRoomRef = afs.collection<Room>("room");
+    this.recordRoomRef = afs.collection<RecordRoom>("recordRoom");
+    // const paymentRef = database.collection("hotelsystem").doc("main_database").collection("payment");
   }
 
 
@@ -58,7 +133,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
 
   public getId(userId) {
 
-    userRef.where("id", "==" , userId).get().then(snapshot => {
+    this.userRef.ref.where("id", "==" , userId).get().then(snapshot => {
       var Data = []
       snapshot.forEach(doc => {
         var data = doc.data()
@@ -73,7 +148,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
 
   public addSupervisor(supervisorId,firstName,lastName,gender,ic,email,phone) {
 
-    supervisorRef.doc(supervisorId).set({
+    this.supervisorRef.doc(supervisorId).set({
       firstName: firstName,
       lastName: lastName,
       gender: gender,
@@ -87,7 +162,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
   
   public editSupervisor(supervisorId,firstName,lastName,gender,ic,email,phone) {
   
-    supervisorRef.doc(supervisorId).update({
+    this.supervisorRef.doc(supervisorId).update({
       firstName: firstName,
       lastName: lastName,
       gender: gender,
@@ -101,14 +176,14 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
   
   public deleteSupervisor(supervisorId) {
   
-    supervisorRef.doc(supervisorId).delete().then((data)=> {
+    this.supervisorRef.doc(supervisorId).delete().then((data)=> {
       console.log("supervisor "+supervisorId+ " has been removed");
     })
   }
   
   public addWorker(hotelDeskPersonnelId,firstName,lastName,gender,ic,email,phone) {
   
-    workerRef.doc(hotelDeskPersonnelId).set({
+    this.workerRef.doc(hotelDeskPersonnelId).set({
       firstName: firstName,
       lastName: lastName,
       gender: gender,
@@ -122,7 +197,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
   
   public editWorker(hotelDeskPersonnelId,firstName,lastName,gender,ic,email,phone) {
   
-    workerRef.doc(hotelDeskPersonnelId).update({
+    this.workerRef.doc(hotelDeskPersonnelId).update({
       firstName: firstName,
       lastName: lastName,
       gender: gender,
@@ -136,14 +211,14 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
   
   public deleteWorker(hotelDeskPersonnelId) {
   
-    workerRef.doc(hotelDeskPersonnelId).delete().then((data)=> {
+    this.workerRef.doc(hotelDeskPersonnelId).delete().then((data)=> {
       console.log("Hotel desk personnel "+ hotelDeskPersonnelId+ " has been deleted");
     })
   }
   
   public addCustomer(customerId,firstName,lastName,gender,ic,email,phone,nationality,city,state) {
   
-    customerRef.doc(customerId).set({
+    this.customerRef.doc(customerId).set({
       firstName: firstName,
       lastName: lastName,
       gender: gender,
@@ -160,7 +235,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
   
   public editCustomer(customerId,firstName,lastName,gender,ic,email,phone,nationality,city,state) {
   
-    customerRef.doc(customerId).update({
+    this.customerRef.doc(customerId).update({
       firstName: firstName,
       lastName: lastName,
       gender: gender,
@@ -177,14 +252,14 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
   
   public deleteCustomer(customerId) {
   
-    customerRef.doc(customerId).delete().then((data)=> {
+    this.customerRef.doc(customerId).delete().then((data)=> {
       console.log("Customer "+ customerId+" has been deleted");
     })
   }
   
   public getRoomType() {
   
-    roomRef.get().then(snapshot => {
+    return this.roomRef.get()/*.then(snapshot => {
       var Data = []
       snapshot.forEach(doc => {
         var data = doc.data()
@@ -194,12 +269,12 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
       });
       console.log(Data);
       return Data
-    })
+    })*/
   }
   
   public getInstayRoom() { //all
   
-    stayRoomRef.get().then(snapshot => {
+    return this.stayRoomRef.get()/*.then(snapshot => {
       var Data = []
       snapshot.forEach(doc => {
         var data = doc.data()
@@ -209,7 +284,8 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
       });
       console.log(Data);
       return Data
-    })
+    })*/
+    
   }
   // getInstayRoom()
   
@@ -233,7 +309,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
       }
       if (t == "S") {
         var Datas = []
-        stayRoomRef.where("type", "==" , "Single").get().then(snapshot => {
+        this.stayRoomRef.ref.where("type", "==" , "Single").get().then(snapshot => {
           var Data = []
           snapshot.forEach(doc => {
             var data = doc.data()
@@ -243,7 +319,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
           });
           // console.log(Data);
           // return Data
-          stayRoomRef.where("type", "==" , "Straits").get().then(snapshot => {
+          this.stayRoomRef.ref.where("type", "==" , "Straits").get().then(snapshot => {
             // var Data = []
             snapshot.forEach(doc => {
               var data = doc.data()
@@ -258,7 +334,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
       }
       if (t == "D") {
         var Datas = []
-        stayRoomRef.where("type", "==" , "Double").get().then(snapshot => {
+        this.stayRoomRef.ref.where("type", "==" , "Double").get().then(snapshot => {
           var Data = []
           snapshot.forEach(doc => {
             var data = doc.data()
@@ -268,7 +344,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
           });
           // console.log(Data);
           // return Data
-          stayRoomRef.where("type", "==" , "Deluxe").get().then(snapshot => {
+          this.stayRoomRef.ref.where("type", "==" , "Deluxe").get().then(snapshot => {
             // var Data = []
             snapshot.forEach(doc => {
               var data = doc.data()
@@ -282,7 +358,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
         })
       }
       if (t == "F") {
-        stayRoomRef.where("type", "==" , "Family").get().then(snapshot => {
+        this.stayRoomRef.ref.where("type", "==" , "Family").get().then(snapshot => {
           var Data = []
           snapshot.forEach(doc => {
             var data = doc.data()
@@ -295,7 +371,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
         })
       }
       if (t == "P") {
-        stayRoomRef.where("type", "==" , "Party").get().then(snapshot => {
+        this.stayRoomRef.ref.where("type", "==" , "Party").get().then(snapshot => {
           var Data = []
           snapshot.forEach(doc => {
             var data = doc.data()
@@ -309,7 +385,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
       }
     }
     else {
-      stayRoomRef.get().then(snapshot => { //all
+      return this.stayRoomRef.get()/*.then(snapshot => { //all
         var Data = []
         snapshot.forEach(doc => {
           var data = doc.data()
@@ -319,14 +395,14 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
         });
         console.log(Data);
         return Data
-      })
+      })*/
     }
   }
   // getInstayRoomFilter(1)
   
   public addRoom(roomId,roomType,roomDescription,bedCount,MinBedCount,MaxBedCount,roomPrice,supervisorId,hotelDeskPersonnelId) {
     //valid roomId,supervisorId,hotelDeskPersonnelId
-    roomRef.doc(roomId).set({
+    this.roomRef.doc(roomId).set({
       type: roomType,
       description: roomDescription,
       bedCount: bedCount,
@@ -340,7 +416,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
   
   public editRoom(roomId,roomType,roomDescription,bedCount,MinBedCount,MaxBedCount,roomPrice) {
     //valid roomId,supervisorId,hotelDeskPersonnelId
-    roomRef.doc(roomId).update({
+    this.roomRef.doc(roomId).update({
       type: roomType,
       description: roomDescription,
       bedCount: bedCount,
@@ -354,12 +430,12 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
   
   public deleteRoom(roomId) {
     //valid roomId
-    roomRef.doc(roomId).delete().then((data)=> {
+    this.roomRef.doc(roomId).delete().then((data)=> {
       console.log("Room "+ roomId+ " has been removed successfully.")
     })
   }
   public getBookingRoom() {
-    stayRoomRef.get().then(snapshot => {
+    return this.stayRoomRef.get()/*.then(snapshot => {
       var Data = []
       snapshot.forEach(doc => {
         var data = doc.data()
@@ -369,31 +445,31 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
       });
       console.log(Data);
       return Data
-    })
+    })*/
    }
   
    public resevationRoom(roomId,customerId, startStayDate, days) {
     //valid roomId avalaible
-    stayRoomRef.doc(roomId).get().then(data => {
-      var id = data.id;
-      var Data = data.data();
-      console.log(id);
-      console.log(Data);
-      if (Data == undefined || Data.status != "Available") {
+    var roomData = this.stayRoomRef.doc(roomId).get()/*.then(data => {*/
+      // var id = data.id;
+      // var Data = data.data();
+      // console.log(id);
+      // console.log(Data);
+      if (roomData == undefined || roomData[0].status != "Available") {
         console.log("room not found or not Available");
       }
       else {
-        customerRef.doc(customerId).get().then(customerData => {
-          var cId = customerData.id
-          var cData = customerData.data();
-          console.log(cId);
-          console.log(cData);
+        var cData = this.customerRef.doc(customerId).get()/*.then(customerData => {*/
+          // var cId = customerData.id
+          // var cData = customerData.data();
+          // console.log(cId);
+          // console.log(cData);
           if (cData == undefined) {
             console.log("Invalid customer id");
           }
           else {
-            var totalAmount = Data.amount * parseInt(days);
-            stayRoomRef.doc(roomId).update({
+            var totalAmount = roomData[0].amount * parseInt(days);
+            this.stayRoomRef.doc(roomId).update({
               bookingDate: new Date(),
               startStayDate: startStayDate,
               dayStay: days,
@@ -405,30 +481,30 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
               console.log("Room "+roomId+" has been booked successfully by "+customerId);
             });
           }
-        })
+        // })
       }
-    })
+    // })
   }
   // resevationRoom("1002","blabla","DateTime",2)
   
   public cancelResevationRoom(roomId,customerId) {
     //valid roomId
-    stayRoomRef.doc(roomId).get().then(data => {
-      var id = data.id;
-      var Data = data.data();
-      console.log(id);
-      console.log(Data);
-      if (Data == undefined || Data.status != "Booking") {
+    var roomData = this.stayRoomRef.doc(roomId).get()/*.then(data => {*/
+      // var id = data.id;
+      // var Data = data.data();
+      // console.log(id);
+      console.log(roomData);
+      if (roomData == undefined || roomData[0].status != "Booking") {
         console.log("room not found or not Available");
       }
       else {
-        customerRef.doc(customerId).get().then(customerData => {
-          var cId = customerData.id
-          var cData = customerData.data();
-          console.log(cId);
+        var cData = this.customerRef.doc(customerId).get()/*.then(customerData => {*/
+          // var cId = customerData.id
+          // var cData = customerData.data();
+          // console.log(cId);
           console.log(cData);
-          if (cData != undefined && Data.customerId == customerId) {
-            stayRoomRef.doc(roomId).update({
+          if (cData != undefined && roomData[0].customerId == customerId) {
+            this.stayRoomRef.doc(roomId).update({
               status: "Cancelled"
             }).then((data) => {
               // Document created successfully.
@@ -439,15 +515,15 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
           else {
             console.log("Invalid customer id");
           }
-        })
+        // })
       }
-    })
+    // })
   }
   // cancelResevationRoom("1002","blabla1")
   
   public adminAddRoom(roomId,customerId,adminId) { //resevation
   
-    stayRoomRef.doc(roomId).set({
+    this.stayRoomRef.doc(roomId).set({
       checkInDate: new Date(),
       roomAddBy: adminId,
       customerId: customerId,
@@ -459,7 +535,7 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
   
   public adminEditRoom(roomId,customerId,adminId) { //resevation
   
-    stayRoomRef.doc(roomId).update({
+    this.stayRoomRef.doc(roomId).update({
       checkInDate: new Date(),
       editBy: adminId,
       customerId: customerId,
@@ -471,56 +547,56 @@ const paymentRef = database.collection("hotelsystem").doc("main_database").colle
   
   public adminDeleteRoom(roomId) { //resevation
   
-    stayRoomRef.doc(roomId).delete().then((data)=> {
+    this.stayRoomRef.doc(roomId).delete().then((data)=> {
       console.log("admin successfully delete room "+roomId);
     })
   }
   
   public checkOut(roomId,customerId,workerId) {
-    stayRoomRef.doc(roomId).get().then(data_origin=> {
-      var id = data_origin.id;
-      var Data = data_origin.data();
-      console.log(Data.customerId);
-      console.log(customerId);
-      if (customerId == Data.customerId && Data.status == "inStay") {
-        stayRoomRef.doc(roomId).update({
+    var customerData = this.stayRoomRef.doc(roomId).get()/*.then(data_origin=> {*/
+      // var id = data_origin.id;
+      // var Data = data_origin.data();
+      // console.log(Data.customerId);
+      // console.log(customerId);
+      if (customerId == customerData[0].customerId && customerData[0].status == "inStay") {
+        this.stayRoomRef.doc(roomId).update({
           checkOutDate: new Date(),
           checkOutBy: workerId,
           status: "checkout"
         }).then(data => {
           console.log("Customer successfully checkout");
-          stayRoomRef.doc(roomId).get().then(data=> {
-            var id = data.id
-            var Data = data.data();
-            console.log(Data);
+          var roomData = this.stayRoomRef.doc(roomId).get()/*.then(data=> {*/
+            // var id = data.id
+            // var Data = data.data();
+            console.log(roomData);
             // var recordNo = generaterecordNo()
             // console.log(recordNo)
-            recordRoomRef.add({
+            this.recordRoomRef.doc("H"+roomId).set({
               roomId: roomId,
-              cusstomerId: Data.customerId,
-              checkInBy: Data.checkInBy,
-              checkInDate: Data.checkInDate,
-              checkOutBy: Data.checkOutBy,
-              checkOutDate: Data.checkOutDate,
-              totalAmount: Data.totalAmount,
+              customerId: roomData[0].customerId,
+              checkInBy: roomData[0].checkInBy,
+              checkInDate: roomData[0].checkInDate,
+              checkOutBy: roomData[0].checkOutBy,
+              checkOutDate: roomData[0].checkOutDate,
+              totalAmount: roomData[0].totalAmount,
             }).then(record => {
               console.log("Data successfully recorded");
               //reset
             })
-          })
+          // })
         })
       }
       else {
         console.log("no valid");
       }
-    })
+    // })
   }
   // checkOut("1001","blabla1","test")
   
-  public addToRecord(data,id) {
-    // get data ->validate->add
-    recordRoomRef.add({
-      data
-    })
-  }
+  // public addToRecord(data,id) {
+  //   // get data ->validate->add
+  //   this.recordRoomRef.add({
+  //     data
+  //   })
+  // }
 }
