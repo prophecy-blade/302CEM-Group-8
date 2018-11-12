@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { AuthService } from '../core/auth.service';
-// import { Http, Response } from '@angular/http';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 // import { DatabaseService } from '../database.service';
-// import { database } from 'firebase';
+import { FirestoreService } from '../firestore.service';
+
+// import { AngularFirestore } from '@angular/fire/firestore';
 
 export interface TotalAdults {
   value: number;
@@ -14,6 +15,7 @@ export interface TotalChildrens {
   viewValue: number;
 }
 
+
 @Component({
   selector: 'app-suites',
   templateUrl: './suites.component.html',
@@ -21,9 +23,20 @@ export interface TotalChildrens {
   // providers: [DatabaseService]
 })
 export class SuitesComponent implements OnInit {
-  constructor(public auth: AuthService) {
-    console.log(auth.user);
+  data: any;
+
+  constructor(
+    // public database: DatabaseService,
+    // private afs: AngularFirestore,
+    public firestore: FirestoreService,
+  ) {
+    // this.data = this.afs.collection(`hotelsystem/main_database`).valueChanges();
+    // this.data = this.database.getBookingRoom();
+    this.data = this.firestore.getRoom();
+
+    console.log(this.data);
   }
+
   ngOnInit() {}
 
   totalAdults: TotalAdults[] = [
