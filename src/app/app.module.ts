@@ -97,10 +97,10 @@ import { UserBookingComponent } from './account-detail/user-booking/user-booking
     InputTextModule,
     InputTextareaModule,
     AngularFireModule.initializeApp({
-      apiKey: 'AIzaSyBr71V5ZUPDcx6CusFJWPZ52gwRa8DlgSA',
-      authDomain: 'tclowdemo.firebaseapp.com',
-      databaseURL: 'https://tclowdemo.firebaseio.com',
-      projectId: 'tclowdemo'
+      apiKey: "AIzaSyBoRoU9rFsKu6dzNyek9TElyENEoNTEOJM",
+      authDomain: "project-database-4d3a7.firebaseapp.com",
+      databaseURL: "https://project-database-4d3a7.firebaseio.com",
+      projectId: "project-database-4d3a7",
     }),
     
     CoreModule

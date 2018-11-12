@@ -4,6 +4,7 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 
 // import { Firestore } from 'firebase/firestore';
 import * as firebase from 'firebase';
+import { Observable } from 'rxjs';
 
 interface User {
   description: String;
@@ -79,17 +80,27 @@ interface RecordRoom {
 }
 
 
-firebase.initializeApp({
-  apiKey: "AIzaSyBr71V5ZUPDcx6CusFJWPZ52gwRa8DlgSA",
-  authDomain: "tclowdemo.firebaseapp.com",
-  databaseURL: "https://tclowdemo.firebaseio.com",
-  projectId: "tclowdemo",
-});
-const database = firebase.firestore();
+// firebase.initializeApp({
+//   apiKey: "AIzaSyBr71V5ZUPDcx6CusFJWPZ52gwRa8DlgSA",
+//   authDomain: "tclowdemo.firebaseapp.com",
+//   databaseURL: "https://tclowdemo.firebaseio.com",
+//   projectId: "tclowdemo",
+// });
+// const database = firebase.firestore();
 
-database.settings({
-  timestampsInSnapshots: true
-});
+// const userRef = database.collection("users");
+// const supervisorRef = database.collection("hotelsystem").doc("main_database").collection("supervisor");
+// const workerRef = database.collection("hotelsystem").doc("main_database").collection("hotelDeskPersonnel");
+// const customerRef = database.collection("hotelsystem").doc("main_database").collection("customer");
+// const roomRef = database.collection("hotelsystem").doc("main_database").collection("room");
+// const bookingRef = database.collection("hotelsystem").doc("main_database").collection("booking");
+// const stayRoomRef = database.collection("hotelsystem").doc("main_database").collection("booking").doc("inStay").collection("room");
+// const recordRoomRef = database.collection("hotelsystem").doc("main_database").collection("booking").doc("record").collection("room");
+// const paymentRef = database.collection("hotelsystem").doc("main_database").collection("payment");
+
+// database.settings({
+//   timestampsInSnapshots: true
+// });
 
 @Injectable()
 
@@ -103,9 +114,10 @@ export class FirestoreService {
   private recordRoomRef: AngularFirestoreCollection<Room>;
   // private paymentRef: AngularFirestoreCollection<Payment>;
 
+  room: Observable<Room>
   // room: AngularFirestoreDocument<Room>;
   constructor(
-    private afs: AngularFirestore
+    private afs: AngularFirestore,
     // private afd: AngularFirestoreDocument,
     // private afc: AngularFirestoreCollection
   ) { 
