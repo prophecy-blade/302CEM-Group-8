@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 // import { DatabaseService } from '../database.service';
 import { FirestoreService } from '../firestore.service';
+import { Room } from '../room';
 
 // import { AngularFirestore } from '@angular/fire/firestore';
 
@@ -15,28 +16,32 @@ export interface TotalChildrens {
   viewValue: number;
 }
 
-
 @Component({
   selector: 'app-suites',
   templateUrl: './suites.component.html',
-  styleUrls: ['./suites.component.css']
+  styleUrls: ['./suites.component.css'],
+  providers: [FirestoreService]
 })
 export class SuitesComponent implements OnInit {
-  data: any;
+  arr: Room[] = [];
 
   constructor(
     // public database: DatabaseService,
     // private afs: AngularFirestore,
-    public firestore: FirestoreService,
+    public firestore: FirestoreService
   ) {
     // this.data = this.afs.collection(`hotelsystem/main_database`).valueChanges();
     // this.data = this.database.getBookingRoom();
-    this.data = this.firestore.getRoom();
-
-    console.log(this.data);
+    // this.roomList = this.firestore.room;
+    // console.log(this.roomList);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.firestore.getRoom().subscribe((room: Room[]) => {
+      this.arr = room;
+      console.log(this.arr);
+    });
+  }
 
   totalAdults: TotalAdults[] = [
     { value: 0, viewValue: 0 },
@@ -49,6 +54,10 @@ export class SuitesComponent implements OnInit {
     { value: 1, viewValue: 1 },
     { value: 2, viewValue: 2 }
   ];
+
+//   selectRoom(room: Room) {
+//     this.firestore.add({severity: 'info', summary: 'Room Selected', detail: 'Type:' + room.Name});
+// }
 
   display: boolean = false;
 
