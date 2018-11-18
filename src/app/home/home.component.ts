@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
     // },
   ];
 
-  height: string = '618px';
+  height: string = '555px';
   minHeight: string;
   arrowSize: string = '30px';
   showArrows: boolean = true;

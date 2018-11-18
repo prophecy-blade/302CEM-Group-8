@@ -1,0 +1,61 @@
+<div class="booking-management">
+  <p-table
+    [columns]="cols"
+    [value]="cars"
+    selectionMode="single"
+    [(selection)]="selectedCar"
+    (onRowSelect)="onRowSelect($event)"
+    [paginator]="true"
+    [rows]="15"
+  >
+    <ng-template pTemplate="caption"> User Booking Management </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{ col.header }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+        <td *ngFor="let col of columns">{{ rowData[col.field] }}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary" let-rowData>
+      <div style="text-align:left">
+        <div class="button-row">
+          <button mat-mini-fab>
+            <mat-icon
+              aria-label="Refresh data icon"
+              (click)="Refresh()"
+              label="Add"
+              >autorenew</mat-icon
+            >
+          </button>
+          &nbsp;
+          <button mat-mini-fab>
+            <mat-icon aria-label="Add data icon" (click)="Add()" label="Add"
+              >add</mat-icon
+            >
+          </button>
+          &nbsp;
+          <button mat-mini-fab>
+            <mat-icon aria-label="Edit data icon" (click)="Edit()" label="Edit"
+              >create</mat-icon
+            >
+          </button>
+          &nbsp;
+          <button mat-mini-fab>
+            <mat-icon
+              aria-label="Delete data icon"
+              (click)="delete()"
+              label="Delete"
+              >delete_sweep</mat-icon
+            >
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </p-table>
+</div>

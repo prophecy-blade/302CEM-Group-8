@@ -1,0 +1,154 @@
+<div class="admin-suites-table">
+  <p-table
+    #dt
+    [columns]="cols"
+    [value]="arr"
+    selectionMode="single"
+    [(selection)]="selectedRoom"
+    [paginator]="true"
+    [rows]="15"
+    sortMode="multiple"
+    [rowsPerPageOptions]="[10, 20, 30]"
+    [globalFilterFields]="['Name', 'Description', 'Price']"
+    [rowHover]="true"
+  >
+    <!-- global filter -->
+    <ng-template pTemplate="caption">
+      <div style="text-align: left">
+        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+        <input
+          type="text"
+          pInputText
+          size="50"
+          placeholder="Global Filter"
+          (input)="dt.filterGlobal($event.target.value, 'contains')"
+          style="width:auto"
+        />
+      </div>
+    </ng-template>
+
+    <!-- header -->
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{ col.header }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+      <tr>
+        <th *ngFor="let col of columns" [ngSwitch]="col.field">
+          <input
+            *ngSwitchCase="'Name'"
+            pInputText
+            placeholder="Search Room"
+            type="text"
+            class="search-box"
+            (input)="dt.filter($event.target.value, col.field, col.contains)"
+          />
+          <input
+            *ngSwitchCase="'Description'"
+            pInputText
+            placeholder="Search Description"
+            type="text"
+            class="search-box"
+            (input)="dt.filter($event.target.value, col.field, col.contains)"
+          />
+          <input
+            *ngSwitchCase="'Price'"
+            pInputText
+            placeholder="Search Price"
+            type="text"
+            class="search-box"
+            (input)="dt.filter($event.target.value, col.field, col.contains)"
+          />
+        </th>
+      </tr>
+    </ng-template>
+
+    <!-- body -->
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td>{{ rowData.Name }}</td>
+        <td>{{ rowData.Description }}</td>
+        <td>{{ rowData.Price }}</td>
+      </tr>
+    </ng-template>
+
+    <!-- summary -->
+    <ng-template pTemplate="summary" let-rowData>
+      There are {{ arr?.length }} Rooms
+      <div style="text-align:left">
+        <button
+          type="button"
+          pButton
+          icon="fa fa-plus"
+          (click)="showDialogToAdd()"
+          label="Add"
+        ></button>
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog
+  header="Add Suites"
+  [(visible)]="displayDialog"
+  [responsive]="true"
+  showEffect="fade"
+  [modal]="true"
+  [width]="300"
+  appendTo="body"
+>
+  <div class="ui-g ui-fluid" *ngIf="bookedRoom">
+    <div class="ui-g-12">
+      <div class="ui-g-4"><label for="room-type">Room Type</label></div>
+      <!--
+        <div class="ui-g-8">
+          <input pInputText id="vin" [(ngModel)]="bookedRoom.vin" />
+        </div>
+      -->
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4"><label for="year">Room Name</label></div>
+      <!--
+        <div class="ui-g-8">
+          <input pInputText id="year" [(ngModel)]="bookedRoom.year" />
+        </div>
+      -->
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4"><label for="brand">Room Price</label></div>
+      <!--
+        <div class="ui-g-8">
+          <input pInputText id="brand" [(ngModel)]="bookedRoom.brand" />
+        </div>
+      -->
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4"><label for="color">Pax</label></div>
+      <!--
+        <div class="ui-g-8">
+          <input pInputText id="color" [(ngModel)]="bookedRoom.color" />
+        </div>
+      -->
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button
+        type="button"
+        pButton
+        icon="fa fa-close"
+        (click)="delete()"
+        label="Delete"
+      ></button>
+      <button
+        type="button"
+        pButton
+        icon="fa fa-check"
+        (click)="save()"
+        label="Save"
+      ></button>
+    </div>
+  </p-footer>
+</p-dialog>
