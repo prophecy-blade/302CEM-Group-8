@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Injectable } from '@angular/core';
 
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from '@angular/fire/firestore';
@@ -6,6 +5,8 @@ import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection 
 // import { Firestore } from 'firebase/firestore';
 import * as firebase from 'firebase';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Room } from './room';
 
 interface User {
   description: String;
@@ -39,7 +40,7 @@ interface Customer {
   city: string,
   state: string
 }
-interface Room {
+interface Rooms {
   roomId: string,
   bookingDate: Date,
   startStayDate: Date,
@@ -111,11 +112,12 @@ export class FirestoreService {
   private workerRef: AngularFirestoreCollection<Worker>;
   private customerRef: AngularFirestoreCollection<Customer>;
   private roomRef: AngularFirestoreCollection<RoomType>;
-  private stayRoomRef: AngularFirestoreCollection<Room>;
-  private recordRoomRef: AngularFirestoreCollection<Room>;
+  private stayRoomRef: AngularFirestoreCollection<Rooms>;
+  private recordRoomRef: AngularFirestoreCollection<RecordRoom>;
   // private paymentRef: AngularFirestoreCollection<Payment>;
 
-  room: Observable<Room>
+  rooms: Observable<Room[]>;
+  roomsCollection: AngularFirestoreCollection<Room>;
   // room: AngularFirestoreDocument<Room>;
   constructor(
     private afs: AngularFirestore,
@@ -128,9 +130,12 @@ export class FirestoreService {
     this.customerRef = afs.collection<Customer>("customer");
     this.roomRef = afs.collection<RoomType>("roomType");
     // this.bookingRef = afs.collection<Booking>("booking");
-    this.stayRoomRef = afs.collection<Room>("room");
+    this.stayRoomRef = afs.collection<Rooms>("room");
     this.recordRoomRef = afs.collection<RecordRoom>("recordRoom");
     // const paymentRef = database.collection("hotelsystem").doc("main_database").collection("payment");
+
+    this.rooms = this.afs.collection<Room>('Room').valueChanges();
+    this.roomsCollection = this.afs.collection('Room', x => x.orderBy('Name',"asc"))
   }
 
 
@@ -140,7 +145,19 @@ export class FirestoreService {
     // let data = this.afs.collection<Room>(`hotelsystem/main_database/booking/inStay/room`).valueChanges();
     // console.log(data);
     // return data
-    return this.stayRoomRef.valueChanges()
+    // return this.stayRoomRef.valueChanges()
+    return (this.rooms = this.afs
+      .collection('Room')
+      .snapshotChanges()
+      .pipe(
+        map(changes => {
+          return changes.map(a => {
+            const data = a.payload.doc.data() as Room;
+            data.id = a.payload.doc.id;
+            return data;
+          });
+        })
+      ));
     
   }
 
@@ -413,18 +430,21 @@ export class FirestoreService {
   }
   // getInstayRoomFilter(1)
   
-  public addRoom(roomId,roomType,roomDescription,bedCount,MinBedCount,MaxBedCount,roomPrice,supervisorId,hotelDeskPersonnelId) {
-    //valid roomId,supervisorId,hotelDeskPersonnelId
-    this.roomRef.doc(roomId).set({
-      type: roomType,
-      description: roomDescription,
-      bedCount: bedCount,
-      MinBedCount: MinBedCount,
-      MaxBedCount: MaxBedCount,
-      price: roomPrice
-    }).then((data)=> {
-      console.log("Room "+ roomId+ " has been added successfully.")
-    })
+  // public addRoom(roomId,roomType,roomDescription,bedCount,MinBedCount,MaxBedCount,roomPrice,supervisorId,hotelDeskPersonnelId) {
+  //   //valid roomId,supervisorId,hotelDeskPersonnelId
+  //   this.roomRef.doc(roomId).set({
+  //     type: roomType,
+  //     description: roomDescription,
+  //     bedCount: bedCount,
+  //     MinBedCount: MinBedCount,
+  //     MaxBedCount: MaxBedCount,
+  //     price: roomPrice
+  //   }).then((data)=> {
+  //     console.log("Room "+ roomId+ " has been added successfully.")
+  //   })
+  // }
+  addRoom(room) {
+    this.roomsCollection.add(room);
   }
   
   public editRoom(roomId,roomType,roomDescription,bedCount,MinBedCount,MaxBedCount,roomPrice) {
@@ -468,10 +488,10 @@ export class FirestoreService {
       // var Data = data.data();
       // console.log(id);
       // console.log(Data);
-      if (roomData == undefined || roomData[0].status != "Available") {
+      if (roomData[0].status != "Available") {
         console.log("room not found or not Available");
       }
-      else {
+      else if (roomData == undefined) {
         var cData = this.customerRef.doc(customerId).get()/*.then(customerData => {*/
           // var cId = customerData.id
           // var cData = customerData.data();
@@ -508,7 +528,7 @@ export class FirestoreService {
       // console.log(id);
       console.log(roomData);
       if (roomData == undefined || roomData[0].status != "Booking") {
-        console.log("room not found or not Available");
+        console.log("room not found or cannot be cancelled");
       }
       else {
         var cData = this.customerRef.doc(customerId).get()/*.then(customerData => {*/
@@ -613,102 +633,3 @@ export class FirestoreService {
   //   })
   // }
 }
-=======
-import { Injectable } from '@angular/core';
-import {
-  AngularFirestore,
-  AngularFirestoreDocument,
-  AngularFirestoreCollection
-} from '@angular/fire/firestore';
-// import { Firestore } from 'firebase/firestore';
-import * as firebase from 'firebase';
-import { Observable } from 'rxjs';
-// import 'rxjs/add/operator/map';
-import { map } from 'rxjs/operators';
-import { Room } from './room';
-
-// interface Room {
-//   // id: String;
-//   Name: String;
-//   // price: Number;
-//   // type: String;
-// }
-
-// firebase.initializeApp({
-//   apiKey: "AIzaSyBr71V5ZUPDcx6CusFJWPZ52gwRa8DlgSA",
-//   authDomain: "tclowdemo.firebaseapp.com",
-//   databaseURL: "https://tclowdemo.firebaseio.com",
-//   projectId: "tclowdemo",
-// });
-// const database = firebase.firestore();
-
-// const userRef = database.collection("users");
-// const supervisorRef = database.collection("hotelsystem").doc("main_database").collection("supervisor");
-// const workerRef = database.collection("hotelsystem").doc("main_database").collection("hotelDeskPersonnel");
-// const customerRef = database.collection("hotelsystem").doc("main_database").collection("customer");
-// const roomRef = database.collection("hotelsystem").doc("main_database").collection("room");
-// const bookingRef = database.collection("hotelsystem").doc("main_database").collection("booking");
-// const stayRoomRef = database.collection("hotelsystem").doc("main_database").collection("booking").doc("inStay").collection("room");
-// const recordRoomRef = database.collection("hotelsystem").doc("main_database").collection("booking").doc("record").collection("room");
-// const paymentRef = database.collection("hotelsystem").doc("main_database").collection("payment");
-
-// database.settings({
-//   timestampsInSnapshots: true
-// });
-
-@Injectable()
-export class FirestoreService {
-  //room = name of the collection
-  rooms: Observable<Room[]>;
-  // instance of firestore collection
-  roomsCollection: AngularFirestoreCollection<Room>;
-  // roomCollection: AngularFirestoreCollection<Room>;
-
-  // room: AngularFirestoreDocument<Room>;
-  constructor(
-    private afs: AngularFirestore // private afd: AngularFirestoreDocument, // private afc: AngularFirestoreCollection
-  ) {
-    // fetch the data from room collection
-    this.rooms = this.afs.collection<Room>('Room').valueChanges();
-    // initializa room collection
-    this.roomsCollection = this.afs.collection('Room', x =>
-      x.orderBy('Name', 'asc')
-    );
-  }
-
-  ngOnInit() {}
-
-  public getRoom() {
-    // let data = this.afs.collection<Room>(`hotelsystem/main_database/booking/inStay/room`).valueChanges();
-    // console.log(data);
-    // return data
-    // this.room = this.roomCollection.snapshotChanges().map(arr = >{
-
-    // })
-    // return this.afs.collection<Room>(`Room`).valueChanges();
-    // stayRoomRef.get().then((value)=>{
-    //   return value;
-    // });
-
-    // fetch auto-id field with data
-    return (this.rooms = this.afs
-      .collection('Room')
-      .snapshotChanges()
-      .pipe(
-        map(changes => {
-          return changes.map(a => {
-            const data = a.payload.doc.data() as Room;
-            data.id = a.payload.doc.id;
-            return data;
-          });
-        })
-      ));
-
-    // return this.getRoom().map(response => response.json());
-  }
-
-  addRoom(room) {
-    this.roomsCollection.add(room);
-  }
-}
->>>>>>> 206705b8d46545463d3abbd6b629057eb22a7fea

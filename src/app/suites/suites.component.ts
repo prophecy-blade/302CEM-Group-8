@@ -43,7 +43,7 @@ export class SuitesComponent implements OnInit {
     });
   }
 
-  totalAdults: TotalPax[] = [
+  totalPax: TotalPax[] = [
     { value: 0, viewValue: 0 },
     { value: 1, viewValue: 1 },
     { value: 2, viewValue: 2 }
