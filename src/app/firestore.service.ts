@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 // import 'rxjs/add/operator/map';
 import { map } from 'rxjs/operators';
 import { Room } from './room';
+import { Booking } from './booking';
 
 // interface Room {
 //   // id: String;
@@ -46,6 +47,10 @@ export class FirestoreService {
   rooms: Observable<Room[]>;
   // instance of firestore collection
   roomsCollection: AngularFirestoreCollection<Room>;
+  //booking = name of the collection
+  bookings: Observable<Booking[]>;
+
+  bookingsCollection: AngularFirestoreCollection<Booking>;
   // roomCollection: AngularFirestoreCollection<Room>;
 
   // room: AngularFirestoreDocument<Room>;
@@ -57,6 +62,12 @@ export class FirestoreService {
     // initializa room collection
     this.roomsCollection = this.afs.collection('Room', x =>
       x.orderBy('Name', 'asc')
+    );
+
+    this.bookings = this.afs.collection<Booking>('Booking').valueChanges();
+
+    this.bookingsCollection = this.afs.collection('Booking', x =>
+      x.orderBy('check_in', 'asc')
     );
   }
 
@@ -91,7 +102,26 @@ export class FirestoreService {
     // return this.getRoom().map(response => response.json());
   }
 
+  public getBooking() {
+    return (this.bookings = this.afs
+      .collection('Booking')
+      .snapshotChanges()
+      .pipe(
+        map(changes => {
+          return changes.map(a => {
+            const data = a.payload.doc.data() as Booking;
+            data.id = a.payload.doc.id;
+            return data;
+          });
+        })
+      ));
+  }
+
   addRoom(room) {
     this.roomsCollection.add(room);
+  }
+
+  addBooking(booking) {
+    this.bookingsCollection.add(booking);
   }
 }
