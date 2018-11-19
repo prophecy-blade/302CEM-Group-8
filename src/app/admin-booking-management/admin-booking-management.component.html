@@ -1,14 +1,33 @@
 <div class="booking-management">
   <p-table
+    #dt
     [columns]="cols"
-    [value]="cars"
+    [value]="arr"
     selectionMode="single"
-    [(selection)]="selectedCar"
-    (onRowSelect)="onRowSelect($event)"
+    [(selection)]="selectedBooking"
     [paginator]="true"
     [rows]="15"
+    sortMode="multiple"
+    [rowsPerPageOptions]="[10, 20, 30]"
+    [globalFilterFields]="['check_in', 'check_out', 'room_id', 'user_id']"
+    [rowHover]="true"
   >
-    <ng-template pTemplate="caption"> User Booking Management </ng-template>
+    <!-- global filter -->
+    <ng-template pTemplate="caption">
+      <div style="text-align: left">
+        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+        <input
+          type="text"
+          pInputText
+          size="50"
+          placeholder="Global Filter"
+          (input)="dt.filterGlobal($event.target.value, 'contains')"
+          style="width:auto"
+        />
+      </div>
+    </ng-template>
+
+    <!-- header -->
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field">
@@ -16,46 +35,185 @@
           <p-sortIcon [field]="col.field"></p-sortIcon>
         </th>
       </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-columns="columns">
-      <tr [pSelectableRow]="rowData">
-        <td *ngFor="let col of columns">{{ rowData[col.field] }}</td>
+      <tr>
+        <th *ngFor="let col of columns" [ngSwitch]="col.field">
+          <input
+            *ngSwitchCase="'check_in'"
+            pInputText
+            placeholder="Search"
+            type="text"
+            class="search-box"
+            (input)="dt.filter($event.target.value, col.field, col.contains)"
+          />
+          <input
+            *ngSwitchCase="'check_out'"
+            pInputText
+            placeholder="Search"
+            type="text"
+            class="search-box"
+            (input)="dt.filter($event.target.value, col.field, col.contains)"
+          />
+          <input
+            *ngSwitchCase="'room_id'"
+            pInputText
+            placeholder="Search Room ID"
+            type="text"
+            class="search-box"
+            (input)="dt.filter($event.target.value, col.field, col.contains)"
+          />
+          <input
+            *ngSwitchCase="'user_id'"
+            pInputText
+            placeholder="Search User ID"
+            type="text"
+            class="search-box"
+            (input)="dt.filter($event.target.value, col.field, col.contains)"
+          />
+        </th>
       </tr>
     </ng-template>
+
+    <!-- body -->
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td>{{ rowData.check_in }}</td>
+        <td>{{ rowData.check_out }}</td>
+        <td>{{ rowData.room_id }}</td>
+        <td>{{ rowData.user_id }}</td>
+      </tr>
+    </ng-template>
+
+    <!-- summary -->
     <ng-template pTemplate="summary" let-rowData>
+      There are {{ arr?.length }} Bookings
       <div style="text-align:left">
-        <div class="button-row">
-          <button mat-mini-fab>
-            <mat-icon
-              aria-label="Refresh data icon"
-              (click)="Refresh()"
-              label="Add"
-              >autorenew</mat-icon
-            >
-          </button>
-          &nbsp;
-          <button mat-mini-fab>
-            <mat-icon aria-label="Add data icon" (click)="Add()" label="Add"
-              >add</mat-icon
-            >
-          </button>
-          &nbsp;
-          <button mat-mini-fab>
-            <mat-icon aria-label="Edit data icon" (click)="Edit()" label="Edit"
-              >create</mat-icon
-            >
-          </button>
-          &nbsp;
-          <button mat-mini-fab>
-            <mat-icon
-              aria-label="Delete data icon"
-              (click)="delete()"
-              label="Delete"
-              >delete_sweep</mat-icon
-            >
-          </button>
-        </div>
+        <button
+          type="button"
+          pButton
+          icon="fa fa-plus"
+          (click)="showDialogToAdd()"
+          label="Add"
+        ></button>
       </div>
     </ng-template>
   </p-table>
 </div>
+
+<form #addform="ngForm">
+  <p-dialog
+    header="Add Booking"
+    [(visible)]="displayDialog"
+    [responsive]="true"
+    showEffect="fade"
+    [modal]="true"
+    [width]="500"
+    appendTo="body"
+    [minWidth]="350"
+    [minY]="70"
+    [maximizable]="true"
+    [baseZIndex]="10000"
+  >
+    <div class="ui-g ui-fluid" *ngIf="model">
+      <div class="ui-g-12">
+        <div class="ui-g-4"><label for="check_in">Check In</label></div>
+        <div class="ui-g-8">
+          <input
+            pInputText
+            id="check_in"
+            [(ngModel)]="model.check_in"
+            name="check_in"
+            required
+            #check_in="ngModel"
+          />
+        </div>
+
+        <div
+          [hidden]="check_in.valid || check_in.pristine"
+          class="alert alert-danger"
+        >
+          Check In is required
+        </div>
+      </div>
+
+      <div class="ui-g-12">
+        <div class="ui-g-4"><label for="check_out">Check Out</label></div>
+        <div class="ui-g-8">
+          <input
+            pInputText
+            [(ngModel)]="model.check_out"
+            name="check_out"
+            id="check_out"
+            required
+            #check_out="ngModel"
+          />
+        </div>
+
+        <div
+          [hidden]="check_out.valid || check_out.pristine"
+          class="alert alert-danger"
+        >
+          Check Out is required
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-4"><label for="room_id">Room ID</label></div>
+        <div class="ui-g-8">
+          <input
+            pInputText
+            [(ngModel)]="model.room_id"
+            name="room_id"
+            id="room_id"
+            required
+            #room_id="ngModel"
+          />
+        </div>
+
+        <div
+          [hidden]="room_id.valid || room_id.pristine"
+          class="alert alert-danger"
+        >
+          Room ID is required
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-4"><label for="user_id">User ID</label></div>
+        <div class="ui-g-8">
+          <input
+            pInputText
+            [(ngModel)]="model.user_id"
+            name="user_id"
+            id="user_id"
+            required
+            #user_id="ngModel"
+          />
+        </div>
+
+        <div
+          [hidden]="user_id.valid || user_id.pristine"
+          class="alert alert-danger"
+        >
+          User ID is required
+        </div>
+      </div>
+    </div>
+
+    <!-- dialog footer -->
+    <p-footer>
+      <button
+        type="button"
+        pButton
+        icon="fa fa-close"
+        (click)="delete()"
+        label="Delete"
+      ></button>
+      <button
+        type="button"
+        pButton
+        icon="fa fa-check"
+        (click)="adminSubmit()"
+        label="Save"
+        [disabled]="!addform.form.valid"
+      ></button>
+    </p-footer>
+  </p-dialog>
+</form>
