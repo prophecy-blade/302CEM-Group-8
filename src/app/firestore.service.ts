@@ -10,6 +10,7 @@ import { Observable } from 'rxjs';
 // import 'rxjs/add/operator/map';
 import { map } from 'rxjs/operators';
 import { Room } from './room';
+import { AuthService } from './core/auth.service';
 
 // interface Room {
 //   // id: String;
@@ -40,12 +41,21 @@ import { Room } from './room';
 //   timestampsInSnapshots: true
 // });
 
+interface Booking {
+  check_in: String;
+  check_out: String;
+  room_id: String;
+  user_id: any;
+}
+
 @Injectable()
 export class FirestoreService {
   //room = name of the collection
   rooms: Observable<Room[]>;
   // instance of firestore collection
   roomsCollection: AngularFirestoreCollection<Room>;
+  booking: AngularFirestoreCollection<Booking>;
+  public auth: AuthService
   // roomCollection: AngularFirestoreCollection<Room>;
 
   // room: AngularFirestoreDocument<Room>;
@@ -89,6 +99,22 @@ export class FirestoreService {
       ));
 
     // return this.getRoom().map(response => response.json());
+  }
+
+  public bookRoom(roomID: String, checkIn: String, checkOut: String) {
+    let user = {}
+    if(this.auth.user !== null && this.auth.user !== undefined) {
+      user = this.auth.user;
+    } else {
+      return false
+    }
+    let book: Booking = {
+      room_id: roomID,
+      user_id: user,
+      check_in: checkIn,
+      check_out: checkOut
+    }
+    this.booking.add(book);
   }
 
   addRoom(room) {
