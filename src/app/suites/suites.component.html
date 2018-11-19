@@ -12,23 +12,25 @@
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Adults">
-      <mat-option *ngFor="let Adults of totalAdults" [value]="Adults.value">
+    <mat-select placeholder="Pax">
+      <mat-option *ngFor="let Adults of totalPax" [value]="Adults.value">
         {{ Adults.viewValue }}
       </mat-option>
     </mat-select>
   </mat-form-field>
 
-  <mat-form-field>
-    <mat-select placeholder="Childrens">
-      <mat-option
-        *ngFor="let Childrens of totalChildrens"
-        [value]="Childrens.value"
-      >
-        {{ Childrens.viewValue }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <!--
+    <mat-form-field>
+      <mat-select placeholder="Childrens">
+        <mat-option
+          *ngFor="let Childrens of totalChildrens"
+          [value]="Childrens.value"
+        >
+          {{ Childrens.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  -->
 
   <button mat-icon-button class="suites-search" (click)="showDialog()">
     <mat-icon aria-label="Search">search</mat-icon>

@@ -6,15 +6,15 @@ import { Room } from '../room';
 
 // import { AngularFirestore } from '@angular/fire/firestore';
 
-export interface TotalAdults {
+export interface TotalPax {
   value: number;
   viewValue: number;
 }
 
-export interface TotalChildrens {
-  value: number;
-  viewValue: number;
-}
+// export interface TotalChildrens {
+//   value: number;
+//   viewValue: number;
+// }
 
 @Component({
   selector: 'app-suites',
@@ -43,21 +43,21 @@ export class SuitesComponent implements OnInit {
     });
   }
 
-  totalAdults: TotalAdults[] = [
+  totalAdults: TotalPax[] = [
     { value: 0, viewValue: 0 },
     { value: 1, viewValue: 1 },
     { value: 2, viewValue: 2 }
   ];
 
-  totalChildrens: TotalChildrens[] = [
-    { value: 0, viewValue: 0 },
-    { value: 1, viewValue: 1 },
-    { value: 2, viewValue: 2 }
-  ];
+  // totalChildrens: TotalChildrens[] = [
+  //   { value: 0, viewValue: 0 },
+  //   { value: 1, viewValue: 1 },
+  //   { value: 2, viewValue: 2 }
+  // ];
 
-//   selectRoom(room: Room) {
-//     this.firestore.add({severity: 'info', summary: 'Room Selected', detail: 'Type:' + room.Name});
-// }
+  //   selectRoom(room: Room) {
+  //     this.firestore.add({severity: 'info', summary: 'Room Selected', detail: 'Type:' + room.Name});
+  // }
 
   display: boolean = false;
 

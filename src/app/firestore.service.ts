@@ -44,6 +44,8 @@ import { Room } from './room';
 export class FirestoreService {
   //room = name of the collection
   rooms: Observable<Room[]>;
+  // instance of firestore collection
+  roomsCollection: AngularFirestoreCollection<Room>;
   // roomCollection: AngularFirestoreCollection<Room>;
 
   // room: AngularFirestoreDocument<Room>;
@@ -52,6 +54,10 @@ export class FirestoreService {
   ) {
     // fetch the data from room collection
     this.rooms = this.afs.collection<Room>('Room').valueChanges();
+    // initializa room collection
+    this.roomsCollection = this.afs.collection('Room', x =>
+      x.orderBy('Name', 'asc')
+    );
   }
 
   ngOnInit() {}
@@ -83,5 +89,9 @@ export class FirestoreService {
       ));
 
     // return this.getRoom().map(response => response.json());
+  }
+
+  addRoom(room) {
+    this.roomsCollection.add(room);
   }
 }

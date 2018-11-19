@@ -90,51 +90,85 @@
   </p-table>
 </div>
 
-<p-dialog
-  header="Add Suites"
-  [(visible)]="displayDialog"
-  [responsive]="true"
-  showEffect="fade"
-  [modal]="true"
-  [width]="300"
-  appendTo="body"
->
-  <div class="ui-g ui-fluid" *ngIf="bookedRoom">
-    <div class="ui-g-12">
-      <div class="ui-g-4"><label for="room-type">Room Type</label></div>
-      <!--
+<form #addform="ngForm">
+  <p-dialog
+    header="Add Room"
+    [(visible)]="displayDialog"
+    [responsive]="true"
+    showEffect="fade"
+    [modal]="true"
+    [width]="500"
+    appendTo="body"
+    [minWidth]="350"
+    [minY]="70"
+    [maximizable]="true"
+    [baseZIndex]="10000"
+  >
+    <div class="ui-g ui-fluid" *ngIf="model">
+      <div class="ui-g-12">
+        <div class="ui-g-4"><label for="Name">Room Type</label></div>
         <div class="ui-g-8">
-          <input pInputText id="vin" [(ngModel)]="bookedRoom.vin" />
+          <input
+            pInputText
+            id="Name"
+            [(ngModel)]="model.Name"
+            name="Name"
+            required
+            #Name="ngModel"
+          />
         </div>
-      -->
-    </div>
-    <div class="ui-g-12">
-      <div class="ui-g-4"><label for="year">Room Name</label></div>
-      <!--
+
+        <div [hidden]="Name.valid || Name.pristine" class="alert alert-danger">
+          Name is required
+        </div>
+      </div>
+
+      <div class="ui-g-12">
+        <div class="ui-g-4">
+          <label for="Description">Room Description</label>
+        </div>
         <div class="ui-g-8">
-          <input pInputText id="year" [(ngModel)]="bookedRoom.year" />
+          <input
+            pInputText
+            [(ngModel)]="model.Description"
+            name="Description"
+            id="Description"
+            required
+            #Description="ngModel"
+          />
         </div>
-      -->
-    </div>
-    <div class="ui-g-12">
-      <div class="ui-g-4"><label for="brand">Room Price</label></div>
-      <!--
+
+        <div
+          [hidden]="Description.valid || Description.pristine"
+          class="alert alert-danger"
+        >
+          Description is required
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-4"><label for="Price">Room Price</label></div>
         <div class="ui-g-8">
-          <input pInputText id="brand" [(ngModel)]="bookedRoom.brand" />
+          <input
+            pInputText
+            [(ngModel)]="model.Price"
+            name="Price"
+            id="Price"
+            required
+            #Price="ngModel"
+          />
         </div>
-      -->
-    </div>
-    <div class="ui-g-12">
-      <div class="ui-g-4"><label for="color">Pax</label></div>
-      <!--
-        <div class="ui-g-8">
-          <input pInputText id="color" [(ngModel)]="bookedRoom.color" />
+
+        <div
+          [hidden]="Price.valid || Price.pristine"
+          class="alert alert-danger"
+        >
+          Price is required
         </div>
-      -->
+      </div>
     </div>
-  </div>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+
+    <!-- dialog footer -->
+    <p-footer>
       <button
         type="button"
         pButton
@@ -146,9 +180,10 @@
         type="button"
         pButton
         icon="fa fa-check"
-        (click)="save()"
+        (click)="adminSubmit()"
         label="Save"
+        [disabled]="!addform.form.valid"
       ></button>
-    </div>
-  </p-footer>
-</p-dialog>
+    </p-footer>
+  </p-dialog>
+</form>

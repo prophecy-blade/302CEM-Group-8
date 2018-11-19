@@ -6,3 +6,8 @@
 .admin-suites-table {
   margin: 30px;
 }
+
+:host >>> .alert alert-danger {
+  color: red;
+  margin-left: 230px;
+}

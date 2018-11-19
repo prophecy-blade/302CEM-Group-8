@@ -14,6 +14,10 @@ export class AdminSuitesManagementComponent implements OnInit {
   newBook: boolean;
   cols: any[];
 
+  // room: Room = {};
+
+  model = { Name: '', Description: '', Price: '' };
+
   constructor(public firestore: FirestoreService) {}
 
   ngOnInit() {
@@ -34,5 +38,12 @@ export class AdminSuitesManagementComponent implements OnInit {
     this.newBook = true;
     // this.bookedRoom = {};
     this.displayDialog = true;
+  }
+
+  adminSubmit() {
+    this.firestore.addRoom(this.model);
+    (this.model.Name = ''),
+      (this.model.Description = ''),
+      (this.model.Price = '');
   }
 }

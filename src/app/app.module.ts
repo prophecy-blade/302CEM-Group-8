@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { CoreModule } from './core/core.module';
+import { FormsModule } from '@angular/forms';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -83,6 +84,7 @@ import { AdminBookingManagementComponent } from './admin-booking-management/admi
     TabMenuModule,
     BrowserAnimationsModule,
     RouterModule,
+    FormsModule,
     AppRoutingModule,
     MatToolbarModule,
     MatMenuModule,
