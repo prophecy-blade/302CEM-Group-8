@@ -1,0 +1,189 @@
+<div class="admin-suites-table">
+  <p-table
+    #dt
+    [columns]="cols"
+    [value]="arr"
+    selectionMode="single"
+    [(selection)]="selectedRoom"
+    [paginator]="true"
+    [rows]="15"
+    sortMode="multiple"
+    [rowsPerPageOptions]="[10, 20, 30]"
+    [globalFilterFields]="['Name', 'Description', 'Price']"
+    [rowHover]="true"
+  >
+    <!-- global filter -->
+    <ng-template pTemplate="caption">
+      <div style="text-align: left">
+        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+        <input
+          type="text"
+          pInputText
+          size="50"
+          placeholder="Global Filter"
+          (input)="dt.filterGlobal($event.target.value, 'contains')"
+          style="width:auto"
+        />
+      </div>
+    </ng-template>
+
+    <!-- header -->
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{ col.header }}
+          <p-sortIcon [field]="col.field"></p-sortIcon>
+        </th>
+      </tr>
+      <tr>
+        <th *ngFor="let col of columns" [ngSwitch]="col.field">
+          <input
+            *ngSwitchCase="'Name'"
+            pInputText
+            placeholder="Search Room"
+            type="text"
+            class="search-box"
+            (input)="dt.filter($event.target.value, col.field, col.contains)"
+          />
+          <input
+            *ngSwitchCase="'Description'"
+            pInputText
+            placeholder="Search Description"
+            type="text"
+            class="search-box"
+            (input)="dt.filter($event.target.value, col.field, col.contains)"
+          />
+          <input
+            *ngSwitchCase="'Price'"
+            pInputText
+            placeholder="Search Price"
+            type="text"
+            class="search-box"
+            (input)="dt.filter($event.target.value, col.field, col.contains)"
+          />
+        </th>
+      </tr>
+    </ng-template>
+
+    <!-- body -->
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td>{{ rowData.Name }}</td>
+        <td>{{ rowData.Description }}</td>
+        <td>{{ rowData.Price }}</td>
+      </tr>
+    </ng-template>
+
+    <!-- summary -->
+    <ng-template pTemplate="summary" let-rowData>
+      There are {{ arr?.length }} Rooms
+      <div style="text-align:left">
+        <button
+          type="button"
+          pButton
+          icon="fa fa-plus"
+          (click)="showDialogToAdd()"
+          label="Add"
+        ></button>
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<form #addform="ngForm">
+  <p-dialog
+    header="Add Room"
+    [(visible)]="displayDialog"
+    [responsive]="true"
+    showEffect="fade"
+    [modal]="true"
+    [width]="500"
+    appendTo="body"
+    [minWidth]="350"
+    [minY]="70"
+    [maximizable]="true"
+    [baseZIndex]="10000"
+  >
+    <div class="ui-g ui-fluid" *ngIf="model">
+      <div class="ui-g-12">
+        <div class="ui-g-4"><label for="Name">Room Type</label></div>
+        <div class="ui-g-8">
+          <input
+            pInputText
+            id="Name"
+            [(ngModel)]="model.Name"
+            name="Name"
+            required
+            #Name="ngModel"
+          />
+        </div>
+
+        <div [hidden]="Name.valid || Name.pristine" class="alert alert-danger">
+          Name is required
+        </div>
+      </div>
+
+      <div class="ui-g-12">
+        <div class="ui-g-4">
+          <label for="Description">Room Description</label>
+        </div>
+        <div class="ui-g-8">
+          <input
+            pInputText
+            [(ngModel)]="model.Description"
+            name="Description"
+            id="Description"
+            required
+            #Description="ngModel"
+          />
+        </div>
+
+        <div
+          [hidden]="Description.valid || Description.pristine"
+          class="alert alert-danger"
+        >
+          Description is required
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <div class="ui-g-4"><label for="Price">Room Price</label></div>
+        <div class="ui-g-8">
+          <input
+            pInputText
+            [(ngModel)]="model.Price"
+            name="Price"
+            id="Price"
+            required
+            #Price="ngModel"
+          />
+        </div>
+
+        <div
+          [hidden]="Price.valid || Price.pristine"
+          class="alert alert-danger"
+        >
+          Price is required
+        </div>
+      </div>
+    </div>
+
+    <!-- dialog footer -->
+    <p-footer>
+      <button
+        type="button"
+        pButton
+        icon="fa fa-close"
+        (click)="delete()"
+        label="Delete"
+      ></button>
+      <button
+        type="button"
+        pButton
+        icon="fa fa-check"
+        (click)="adminSubmit()"
+        label="Save"
+        [disabled]="!addform.form.valid"
+      ></button>
+    </p-footer>
+  </p-dialog>
+</form>

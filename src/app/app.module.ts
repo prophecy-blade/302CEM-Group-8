@@ -3,8 +3,10 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { CoreModule } from './core/core.module';
+import { FormsModule } from '@angular/forms';
 
 import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
@@ -49,6 +51,11 @@ import { SuiteSingleComponent } from './suites-detail/suite-single/suite-single.
 import { AccountDetailComponent } from './account-detail/account-detail.component';
 import { UserInfoComponent } from './account-detail/user-info/user-info.component';
 import { UserBookingComponent } from './account-detail/user-booking/user-booking.component';
+import { database } from 'firebase';
+import { AdminSuitesManagementComponent } from './admin-suites-management/admin-suites-management.component';
+import { AdminBookingManagementComponent } from './admin-booking-management/admin-booking-management.component';
+// import { Room } from './room';
+// import { DatabaseService } from './database.service';
 
 @NgModule({
   declarations: [
@@ -67,13 +74,17 @@ import { UserBookingComponent } from './account-detail/user-booking/user-booking
     SuiteSingleComponent,
     AccountDetailComponent,
     UserInfoComponent,
-    UserBookingComponent
+    UserBookingComponent,
+    AdminSuitesManagementComponent,
+    AdminBookingManagementComponent
+    // Room
   ],
   imports: [
     BrowserModule,
     TabMenuModule,
     BrowserAnimationsModule,
     RouterModule,
+    FormsModule,
     AppRoutingModule,
     MatToolbarModule,
     MatMenuModule,
@@ -97,15 +108,15 @@ import { UserBookingComponent } from './account-detail/user-booking/user-booking
     InputTextModule,
     InputTextareaModule,
     AngularFireModule.initializeApp({
-      apiKey: "AIzaSyBoRoU9rFsKu6dzNyek9TElyENEoNTEOJM",
-      authDomain: "project-database-4d3a7.firebaseapp.com",
-      databaseURL: "https://project-database-4d3a7.firebaseio.com",
-      projectId: "project-database-4d3a7",
+      apiKey: 'AIzaSyBoRoU9rFsKu6dzNyek9TElyENEoNTEOJM',
+      authDomain: 'project-database-4d3a7.firebaseapp.com',
+      databaseURL: 'https://project-database-4d3a7.firebaseio.com',
+      projectId: 'project-database-4d3a7'
     }),
-    
+    AngularFirestoreModule,
     CoreModule
   ],
-  providers: [ FirestoreService ],
+  providers: [FirestoreService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

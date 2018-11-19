@@ -6,12 +6,25 @@
     </h3>
   </div>
 
-  <div class="navigation-bar">
-    <p-tabMenu [model]="items"></p-tabMenu>
+  <div class="user-name" *ngIf="auth.user | async; then authenticated else guest">
+    <!-- ng template replace here -->
   </div>
 
   <!-- user logged in -->
   <ng-template #authenticated>
+    <div class="navigation-bar" *ngIf="auth.user | async as user">
+
+      <!-- check for role (admin/front-desk) tabmenu -->
+      <div *ngIf="user.role=='Admin' || user.role=='front-desk';else normalUser">
+        <p-tabMenu [model]="adminItems"></p-tabMenu>
+      </div>
+
+      <!-- normal user tabmenu -->
+      <ng-template #normalUser>
+        <p-tabMenu [model]="items"></p-tabMenu>
+      </ng-template>
+    </div>
+
     <div class="user-name" *ngIf="auth.user | async as user">
       <button mat-icon-button [matMenuTriggerFor]="menu">
         Welcome, {{user?.username}} &nbsp;
@@ -35,28 +48,27 @@
     </div>
   </ng-template>
 
-  <div class="user-name" *ngIf="auth.user | async; then authenticated else guest">
-    <!-- empty -->
-  </div>
-
   <!-- user not logged in -->
   <ng-template #guest>
+    <div class="navigation-bar">
+      <p-tabMenu [model]="items"></p-tabMenu>
+    </div>
     <div class="user-name">
       <button mat-stroked-button (click)="auth.googleLogin()">Login</button>
-      <!-- <button (click)="auth.googleLogin()">
-        login
-      </button> -->
     </div>
   </ng-template>
 </div>
 
 <router-outlet></router-outlet>
 
+<!-- page footer -->
 <mat-toolbar class="footer">
   <span><button type="text" (click)="showDialog()" pButton icon="pi pi-info-circle" label="Help" class="help-btn"></button></span>
   <span> | Sitemap</span>
 </mat-toolbar>
 
+
+<!-- help content -->
 <p-dialog header="Help & FAQ" [(visible)]="display" [modal]="true" [responsive]="true" [width]="800" [minWidth]="200"
   [minY]="70" [maximizable]="true" [baseZIndex]="10000">
   <span>
