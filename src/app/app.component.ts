@@ -16,7 +16,7 @@ export class AppComponent {
   user_id: String = null;
 
   constructor(public auth: AuthService) {
-    console.log(auth.user);
+    console.log(this.auth.user);
   }
 
   ngOnInit() {
