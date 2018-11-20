@@ -9,8 +9,8 @@ import * as firebase from 'firebase';
 import { Observable } from 'rxjs';
 // import 'rxjs/add/operator/map';
 import { map } from 'rxjs/operators';
-import { Room } from './room';
-import { Booking } from './booking';
+// import { Room } from './room';
+// import { Booking } from './booking';
 
 // interface Room {
 //   // id: String;
@@ -41,12 +41,40 @@ import { Booking } from './booking';
 //   timestampsInSnapshots: true
 // });
 
+//database tables and fields
+//so not need to import room and others
+interface Room { //  tc: pls change all the field to small letter so that every fields in tables is small letter and easier for work
+  id?: string,
+  Name: string,
+  type?: string, //not optional remove ? after screen change
+  RoomNo?: number,
+  Description: string,
+  Price: number
+}
+interface Booking {
+  id?: string,
+  check_in: Date,
+  check_out: Date,
+  room_id: string,
+  user_id: string
+}
+interface history {
+  id?: string, //tc: ? mean optional, no ? mean need field
+  user_id: string,
+  room_id: string,
+  amount: number
+}
+
 @Injectable()
 export class FirestoreService {
+
+  snapshot:any;
+  historysnapshot:any;
   //room = name of the collection
   rooms: Observable<Room[]>;
   // instance of firestore collection
   roomsCollection: AngularFirestoreCollection<Room>;
+  roomDoc: AngularFirestoreDocument<Room>;
   //booking = name of the collection
   bookings: Observable<Booking[]>;
 
@@ -54,9 +82,16 @@ export class FirestoreService {
   // roomCollection: AngularFirestoreCollection<Room>;
 
   // room: AngularFirestoreDocument<Room>;
+
+  historyCollection: AngularFirestoreCollection<History>;
+  history: Observable<History[]>;
   constructor(
     private afs: AngularFirestore // private afd: AngularFirestoreDocument, // private afc: AngularFirestoreCollection
   ) {
+    
+  }
+
+  ngOnInit() {
     // fetch the data from room collection
     this.rooms = this.afs.collection<Room>('Room').valueChanges();
     // initializa room collection
@@ -69,9 +104,13 @@ export class FirestoreService {
     this.bookingsCollection = this.afs.collection('Booking', x =>
       x.orderBy('check_in', 'asc')
     );
-  }
 
-  ngOnInit() {}
+    this.historyCollection = this.afs.collection("History", ref => {
+      return ref.orderBy("room_id").orderBy("user_id")
+    });
+    this.history = this.historyCollection.valueChanges();
+    // this.historysnapshot = this.historyCollection.snapshotChanges()
+  }
 
   public getRoom() {
     // let data = this.afs.collection<Room>(`hotelsystem/main_database/booking/inStay/room`).valueChanges();
@@ -86,7 +125,7 @@ export class FirestoreService {
     // });
 
     // fetch auto-id field with data
-    return (this.rooms = this.afs
+    return (this.rooms = this.afs //tc: not need 'this.rooms ='
       .collection('Room')
       .snapshotChanges()
       .pipe(
@@ -100,6 +139,112 @@ export class FirestoreService {
       ));
 
     // return this.getRoom().map(response => response.json());
+  }
+  //havent done have issue when combine two object to return
+  public getAvaliableRoom(pax) { // Require pax, only get avaliable room base on status and pax
+    if (pax == 0) {
+      return (this.afs
+        .collection('Room', ref => {return ref.where('status','==','Avaliable')})
+        .snapshotChanges()
+        .pipe(
+          map(changes => {
+            return changes.map(a => {
+              const data = a.payload.doc.data() as Room;
+              data.id = a.payload.doc.id;
+              return data;
+            });
+          })
+        ));
+    }
+    if (pax == 1) {
+      var Data = [];
+      var data1 = this.afs
+        .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Single')})
+        .snapshotChanges()
+        .pipe(
+          map(changes => {
+            return changes.map(a => {
+              const data = a.payload.doc.data() as Room;
+              data.id = a.payload.doc.id;
+              return data;
+            });
+          })
+        )
+      var data2 = this.afs
+      .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Straits')})
+      .snapshotChanges()
+      .pipe(
+        map(changes => {
+          return changes.map(a => {
+            const data = a.payload.doc.data() as Room;
+            data.id = a.payload.doc.id;
+            return data;
+          });
+        })
+      )
+      Data.push(data1)
+      Data.push(data2)
+      return Data
+    }
+    if (pax == 2) {
+      var Data = [];
+      var data1 = this.afs
+        .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Double')})
+        .snapshotChanges()
+        .pipe(
+          map(changes => {
+            return changes.map(a => {
+              const data = a.payload.doc.data() as Room;
+              data.id = a.payload.doc.id;
+              return data;
+            });
+          })
+        )
+      var data2 = this.afs
+      .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Deluxe')})
+      .snapshotChanges()
+      .pipe(
+        map(changes => {
+          return changes.map(a => {
+            const data = a.payload.doc.data() as Room;
+            data.id = a.payload.doc.id;
+            return data;
+          });
+        })
+      )
+      Data.push(data1)
+      Data.push(data2)
+      return Data
+    }
+    if (pax >= 3 && pax <=4) {
+      return (this.afs
+        .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Family')})
+        .snapshotChanges()
+        .pipe(
+          map(changes => {
+            return changes.map(a => {
+              const data = a.payload.doc.data() as Room;
+              data.id = a.payload.doc.id;
+              return data;
+            });
+          })
+        ));
+    }
+    if (pax >= 5) {
+      return (this.afs
+        .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Party')})
+        .snapshotChanges()
+        .pipe(
+          map(changes => {
+            return changes.map(a => {
+              const data = a.payload.doc.data() as Room;
+              data.id = a.payload.doc.id;
+              return data;
+            });
+          })
+        ));
+    }
+    
   }
 
   public getBooking() {
@@ -117,7 +262,7 @@ export class FirestoreService {
       ));
   }
 
-  addRoom(room) {
+  addRoom(room) { //only admin can add
     this.roomsCollection.add(room);
   }
 
