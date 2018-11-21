@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 // import { Room } from './room';
 // import { Booking } from './booking';
+import { AuthService } from './core/auth.service';
 
 // interface Room {
 //   // id: String;
@@ -44,30 +45,31 @@ import { map } from 'rxjs/operators';
 //database tables and fields
 //so not need to import room and others
 interface Room { //  tc: pls change all the field to small letter so that every fields in tables is small letter and easier for work
-  id?: string,
-  Name: string,
-  type?: string, //not optional remove ? after screen change
+  id?: String,
+  Name: String,
+  type?: String, //not optional remove ? after screen change
   RoomNo?: number,
-  Description: string,
-  Price: number
+  Description: String,
+  Price: Number
 }
 interface Booking {
-  id?: string,
-  check_in: Date,
-  check_out: Date,
-  room_id: string,
-  user_id: string
+  id?: String,
+  check_in: String,
+  check_out: String,
+  room_id: String,
+  user_id: any
 }
 interface history {
-  id?: string, //tc: ? mean optional, no ? mean need field
-  user_id: string,
-  room_id: string,
+  id?: String, //tc: ? mean optional, no ? mean need field
+  user_id: String,
+  room_id: String,
   amount: number
 }
 
 @Injectable()
 export class FirestoreService {
 
+  public auth: AuthService;
   snapshot:any;
   historysnapshot:any;
   //room = name of the collection
@@ -77,6 +79,7 @@ export class FirestoreService {
   roomDoc: AngularFirestoreDocument<Room>;
   //booking = name of the collection
   bookings: Observable<Booking[]>;
+  
 
   bookingsCollection: AngularFirestoreCollection<Booking>;
   // roomCollection: AngularFirestoreCollection<Room>;
@@ -141,111 +144,111 @@ export class FirestoreService {
     // return this.getRoom().map(response => response.json());
   }
   //havent done have issue when combine two object to return
-  public getAvaliableRoom(pax) { // Require pax, only get avaliable room base on status and pax
-    if (pax == 0) {
-      return (this.afs
-        .collection('Room', ref => {return ref.where('status','==','Avaliable')})
-        .snapshotChanges()
-        .pipe(
-          map(changes => {
-            return changes.map(a => {
-              const data = a.payload.doc.data() as Room;
-              data.id = a.payload.doc.id;
-              return data;
-            });
-          })
-        ));
-    }
-    if (pax == 1) {
-      var Data = [];
-      var data1 = this.afs
-        .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Single')})
-        .snapshotChanges()
-        .pipe(
-          map(changes => {
-            return changes.map(a => {
-              const data = a.payload.doc.data() as Room;
-              data.id = a.payload.doc.id;
-              return data;
-            });
-          })
-        )
-      var data2 = this.afs
-      .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Straits')})
-      .snapshotChanges()
-      .pipe(
-        map(changes => {
-          return changes.map(a => {
-            const data = a.payload.doc.data() as Room;
-            data.id = a.payload.doc.id;
-            return data;
-          });
-        })
-      )
-      Data.push(data1)
-      Data.push(data2)
-      return Data
-    }
-    if (pax == 2) {
-      var Data = [];
-      var data1 = this.afs
-        .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Double')})
-        .snapshotChanges()
-        .pipe(
-          map(changes => {
-            return changes.map(a => {
-              const data = a.payload.doc.data() as Room;
-              data.id = a.payload.doc.id;
-              return data;
-            });
-          })
-        )
-      var data2 = this.afs
-      .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Deluxe')})
-      .snapshotChanges()
-      .pipe(
-        map(changes => {
-          return changes.map(a => {
-            const data = a.payload.doc.data() as Room;
-            data.id = a.payload.doc.id;
-            return data;
-          });
-        })
-      )
-      Data.push(data1)
-      Data.push(data2)
-      return Data
-    }
-    if (pax >= 3 && pax <=4) {
-      return (this.afs
-        .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Family')})
-        .snapshotChanges()
-        .pipe(
-          map(changes => {
-            return changes.map(a => {
-              const data = a.payload.doc.data() as Room;
-              data.id = a.payload.doc.id;
-              return data;
-            });
-          })
-        ));
-    }
-    if (pax >= 5) {
-      return (this.afs
-        .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Party')})
-        .snapshotChanges()
-        .pipe(
-          map(changes => {
-            return changes.map(a => {
-              const data = a.payload.doc.data() as Room;
-              data.id = a.payload.doc.id;
-              return data;
-            });
-          })
-        ));
-    }
+  // public getAvaliableRoom(pax) { // Require pax, only get avaliable room base on status and pax
+  //   if (pax == 0) {
+  //     return (this.afs
+  //       .collection('Room', ref => {return ref.where('status','==','Avaliable')})
+  //       .snapshotChanges()
+  //       .pipe(
+  //         map(changes => {
+  //           return changes.map(a => {
+  //             const data = a.payload.doc.data() as Room;
+  //             data.id = a.payload.doc.id;
+  //             return data;
+  //           });
+  //         })
+  //       ));
+  //   }
+  //   if (pax == 1) {
+  //     var Data = [];
+  //     var data1 = this.afs
+  //       .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Single')})
+  //       .snapshotChanges()
+  //       .pipe(
+  //         map(changes => {
+  //           return changes.map(a => {
+  //             const data = a.payload.doc.data() as Room;
+  //             data.id = a.payload.doc.id;
+  //             return data;
+  //           });
+  //         })
+  //       )
+  //     var data2 = this.afs
+  //     .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Straits')})
+  //     .snapshotChanges()
+  //     .pipe(
+  //       map(changes => {
+  //         return changes.map(a => {
+  //           const data = a.payload.doc.data() as Room;
+  //           data.id = a.payload.doc.id;
+  //           return data;
+  //         });
+  //       })
+  //     )
+  //     Data.push(data1)
+  //     Data.push(data2)
+  //     return Data
+  //   }
+  //   if (pax == 2) {
+  //     var Data = [];
+  //     var data1 = this.afs
+  //       .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Double')})
+  //       .snapshotChanges()
+  //       .pipe(
+  //         map(changes => {
+  //           return changes.map(a => {
+  //             const data = a.payload.doc.data() as Room;
+  //             data.id = a.payload.doc.id;
+  //             return data;
+  //           });
+  //         })
+  //       )
+  //     var data2 = this.afs
+  //     .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Deluxe')})
+  //     .snapshotChanges()
+  //     .pipe(
+  //       map(changes => {
+  //         return changes.map(a => {
+  //           const data = a.payload.doc.data() as Room;
+  //           data.id = a.payload.doc.id;
+  //           return data;
+  //         });
+  //       })
+  //     )
+  //     Data.push(data1)
+  //     Data.push(data2)
+  //     return Data
+  //   }
+  //   if (pax >= 3 && pax <=4) {
+  //     return (this.afs
+  //       .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Family')})
+  //       .snapshotChanges()
+  //       .pipe(
+  //         map(changes => {
+  //           return changes.map(a => {
+  //             const data = a.payload.doc.data() as Room;
+  //             data.id = a.payload.doc.id;
+  //             return data;
+  //           });
+  //         })
+  //       ));
+  //   }
+  //   if (pax >= 5) {
+  //     return (this.afs
+  //       .collection('Room', ref => {return ref.where('status','==','Avaliable').where('type','==','Party')})
+  //       .snapshotChanges()
+  //       .pipe(
+  //         map(changes => {
+  //           return changes.map(a => {
+  //             const data = a.payload.doc.data() as Room;
+  //             data.id = a.payload.doc.id;
+  //             return data;
+  //           });
+  //         })
+  //       ));
+  //   }
     
-  }
+  // }
 
   public getBooking() {
     return (this.bookings = this.afs
@@ -268,5 +271,20 @@ export class FirestoreService {
 
   addBooking(booking) {
     this.bookingsCollection.add(booking);
+  }
+  public bookRoom(roomID: String, checkIn: String, checkOut: String) {
+    let user = {}
+    if(this.auth.user !== null && this.auth.user !== undefined) {
+      user = this.auth.user;
+    } else {
+      return false
+    }
+    let book: Booking = {
+      room_id: roomID,
+      user_id: user,
+      check_in: checkIn,
+      check_out: checkOut
+    }
+    this.bookingsCollection.add(book);
   }
 }
