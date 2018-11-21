@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FirestoreService } from '../firestore.service';
-import { Booking } from '../booking';
+// import { Booking } from '../booking';
+
+interface Booking {
+  id?: string,
+  check_in: string,
+  check_out: string,
+  room_id: string,
+  user_id: any
+}
 
 @Component({
   selector: 'app-admin-booking-management',
