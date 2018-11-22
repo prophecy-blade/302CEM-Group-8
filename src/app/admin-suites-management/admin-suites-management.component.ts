@@ -11,8 +11,9 @@ import { Room } from '../room';
 export class AdminSuitesManagementComponent implements OnInit {
   arr: Room[] = [];
   displayDialog: boolean;
-  newBook: boolean;
+  // newBook: boolean;
   cols: any[];
+  selectedRoom: Room[];
 
   // room: Room = {};
 
@@ -30,13 +31,12 @@ export class AdminSuitesManagementComponent implements OnInit {
       { field: 'Name', header: 'Room Type' },
       { field: 'Description', header: 'Description' },
       { field: 'Price', header: 'Price' }
-      // { field: 'pax', header: 'Pax' }
     ];
   }
 
   showDialogToAdd() {
-    this.newBook = true;
-    // this.bookedRoom = {};
+    // this.newBook = true;
+    // this.room = [];
     this.displayDialog = true;
   }
 
@@ -45,5 +45,10 @@ export class AdminSuitesManagementComponent implements OnInit {
     (this.model.Name = ''),
       (this.model.Description = ''),
       (this.model.Price = '');
+    this.displayDialog = false;
+  }
+
+  onDelete(room) {
+    this.firestore.deleteRoom(room);
   }
 }
