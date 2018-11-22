@@ -293,13 +293,29 @@ export class FirestoreService {
       status: "Booking"
     })
   }
-  checkIn(roomID) {
+  public cancelRoom(roomID: string) {
+    let user = {}
+    //this.auth = undefined
+    if(this.auth.user !== null && this.auth.user !== undefined) {
+      user = this.auth.user;
+    } else {
+      return false
+    }
+    
+    this.roomsCollection.doc(roomID).update({
+      status: "Avaliable",
+      user_id: null,
+      check_in: null,
+      check_out: null
+    })
+  }
+  public checkIn(roomID: string) {
     this.roomsCollection.doc(roomID).update({
       status: "CheckIn",
       check_in_date: new Date()
     })
   }
-  checkOut(roomID,UserID,checkInDate,amount) {
+  public checkOut(roomID: string,UserID: string,checkInDate: Date,amount: number) {
     this.roomsCollection.doc(roomID).update({
       status: "CheckOut",
       check_out_date: new Date()
@@ -311,6 +327,7 @@ export class FirestoreService {
       check_out_date: new Date(),
       amount: amount
     })
+    this.roomsCollection.doc(roomID).delete()
   }
   public getHistory() {
 
