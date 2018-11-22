@@ -16,6 +16,7 @@ import { ContactComponent } from './contact/contact.component';
 import { ServicesComponent } from './services/services.component';
 import { AdminBookingManagementComponent } from './admin-booking-management/admin-booking-management.component';
 import { AdminSuitesManagementComponent } from './admin-suites-management/admin-suites-management.component';
+import {FrontdeskManagementComponent} from './frontdesk-management/frontdesk-management.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, //empty path means when no path from the url, then straightaway redirect to-
@@ -48,7 +49,8 @@ const routes: Routes = [
     path: 'admin-booking-management',
     component: AdminBookingManagementComponent
   },
-  { path: 'admin-suites-management', component: AdminSuitesManagementComponent }
+  { path: 'admin-suites-management', component: AdminSuitesManagementComponent },
+  { path: 'frontdesk-management', component: FrontdeskManagementComponent }
 ];
 
 @NgModule({
