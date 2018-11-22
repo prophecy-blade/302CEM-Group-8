@@ -13,6 +13,7 @@ export class AppComponent {
   display: boolean = false;
   items: MenuItem[];
   adminItems: MenuItem[];
+  frontdeskItems: MenuItem[];
 
   user_id: String = null;
 
@@ -28,7 +29,7 @@ export class AppComponent {
         routerLink: ['/home']
       },
       { label: 'Suites', icon: 'fas fa-bed', routerLink: ['/suites'] },
-      { label: 'Services', icon: 'fas fa-book' },
+      { label: 'Services', icon: 'fas fa-book', routerLink: ['/services'] },
       { label: 'Account', icon: 'fas fa-user', routerLink: ['/user-account'] },
       { label: 'Contact', icon: 'fas fa-envelope', routerLink: ['/contact'] }
     ];
@@ -39,8 +40,32 @@ export class AppComponent {
         icon: 'fas fa-hotel',
         routerLink: ['/home']
       },
-      { label: 'Suites Management', icon: 'fas fa-house' },
-      { label: 'Booking Management', icon: 'fas fa-book' },
+      {
+        label: 'Suites Management',
+        icon: 'fas fa-bed',
+        routerLink: ['/admin-suites-management']
+      },
+      {
+        label: 'Administration',
+        icon: 'fas fa-book',
+        routerLink: ['/admin-booking-management']
+      },
+      { label: 'Account', icon: 'fas fa-user', routerLink: ['/user-account'] },
+      { label: 'Contact', icon: 'fas fa-envelope', routerLink: ['/contact'] }
+    ];
+
+    this.frontdeskItems = [
+      {
+        label: 'The Transylvania',
+        icon: 'fas fa-hotel',
+        routerLink: ['/home']
+      },
+      {
+        label: 'Room Status',
+        icon: 'far fa-calendar-check',
+        routerLink: ['/frontdesk-management']
+      },
+      { label: 'Services', icon: 'fas fa-book', routerLink: ['/services'] },
       { label: 'Account', icon: 'fas fa-user', routerLink: ['/user-account'] },
       { label: 'Contact', icon: 'fas fa-envelope', routerLink: ['/contact'] }
     ];

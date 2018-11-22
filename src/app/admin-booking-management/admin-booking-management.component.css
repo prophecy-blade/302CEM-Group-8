@@ -1,0 +1,23 @@
+.booking-management {
+  margin: 30px;
+}
+
+.mat-mini-fab.mat-accent {
+  background-color: gold;
+  color: black;
+}
+
+.mat-icon-button {
+  height: 1px;
+  line-height: 18px;
+  margin-left: 17px;
+}
+
+.mat-icon-button .mat-icon,
+.mat-icon-button i {
+  line-height: 18px;
+}
+
+.mat-icon {
+  height: 18px;
+}

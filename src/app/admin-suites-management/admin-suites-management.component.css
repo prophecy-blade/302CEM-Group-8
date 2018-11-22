@@ -1,0 +1,28 @@
+.mat-mini-fab.mat-accent {
+  background-color: gold;
+  color: black;
+}
+
+.admin-suites-table {
+  margin: 30px;
+}
+
+:host >>> .alert alert-danger {
+  color: red;
+  margin-left: 230px;
+}
+
+.mat-icon-button {
+  height: 1px;
+  line-height: 18px;
+  margin-left: 17px;
+}
+
+.mat-icon-button .mat-icon,
+.mat-icon-button i {
+  line-height: 18px;
+}
+
+.mat-icon {
+  height: 18px;
+}

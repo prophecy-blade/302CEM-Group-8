@@ -1,23 +1,30 @@
 <div class="home-container">
   <div class="app-icon">
     <i class="fas fa-hotel fa-3x"></i>
-    <h3 class="app-title">
-      {{ title }}
-    </h3>
+    <h3 class="app-title">{{ title }}</h3>
   </div>
 
-  <div class="user-name" *ngIf="auth.user | async; then authenticated else guest">
+  <div
+    class="user-name"
+    *ngIf="(auth.user | async); then: authenticated; else: guest"
+  >
     <!-- ng template replace here -->
   </div>
 
   <!-- user logged in -->
   <ng-template #authenticated>
-    <div class="navigation-bar" *ngIf="auth.user | async as user">
-
-      <!-- check for role (admin/front-desk) tabmenu -->
-      <div *ngIf="user.role=='Admin' || user.role=='front-desk';else normalUser">
+    <div class="navigation-bar" *ngIf="(auth.user | async) as user">
+      <!-- admin tabmenu -->
+      <ng-container *ngIf="user.role == 'Admin'; else: frontdesk">
         <p-tabMenu [model]="adminItems"></p-tabMenu>
-      </div>
+      </ng-container>
+
+      <!-- frontdesk tabmenu -->
+      <ng-template #frontdesk>
+        <ng-container *ngIf="user.role == 'front-desk'; else: normalUser">
+          <p-tabMenu [model]="frontdeskItems"></p-tabMenu>
+        </ng-container>
+      </ng-template>
 
       <!-- normal user tabmenu -->
       <ng-template #normalUser>
@@ -25,9 +32,9 @@
       </ng-template>
     </div>
 
-    <div class="user-name" *ngIf="auth.user | async as user">
+    <div class="user-name" *ngIf="(auth.user | async) as user">
       <button mat-icon-button [matMenuTriggerFor]="menu">
-        Welcome, {{user?.username}} &nbsp;
+        Welcome, {{ user?.username }} &nbsp;
         <mat-icon>keyboard_arrow_down</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
@@ -40,8 +47,7 @@
           <span>My Booking</span>
         </button>
         <button mat-menu-item (click)="auth.signOut()">
-          <mat-icon>
-            lock_open</mat-icon>
+          <mat-icon> lock_open</mat-icon>
           <span>Logout</span>
         </button>
       </mat-menu>
@@ -50,9 +56,7 @@
 
   <!-- user not logged in -->
   <ng-template #guest>
-    <div class="navigation-bar">
-      <p-tabMenu [model]="items"></p-tabMenu>
-    </div>
+    <div class="navigation-bar"><p-tabMenu [model]="items"></p-tabMenu></div>
     <div class="user-name">
       <button mat-stroked-button (click)="auth.googleLogin()">Login</button>
     </div>
@@ -63,163 +67,223 @@
 
 <!-- page footer -->
 <mat-toolbar class="footer">
-  <span><button type="text" (click)="showDialog()" pButton icon="pi pi-info-circle" label="Help" class="help-btn"></button></span>
+  <span
+    ><button
+      type="text"
+      (click)="showDialog()"
+      pButton
+      icon="pi pi-info-circle"
+      label="Help"
+      class="help-btn"
+    ></button
+  ></span>
   <span> | Sitemap</span>
 </mat-toolbar>
 
-
 <!-- help content -->
-<p-dialog header="Help & FAQ" [(visible)]="display" [modal]="true" [responsive]="true" [width]="800" [minWidth]="200"
-  [minY]="70" [maximizable]="true" [baseZIndex]="10000">
+<p-dialog
+  header="Help & FAQ"
+  [(visible)]="display"
+  [modal]="true"
+  [responsive]="true"
+  [width]="800"
+  [minWidth]="200"
+  [minY]="70"
+  [maximizable]="true"
+  [baseZIndex]="10000"
+>
   <span>
     <h1>Personal Data Protection Policy (English version)</h1>
-    Hotel Transylvania together with its subsidiaries, affiliates, related and associated companies respects and is
-    committed to the protection of your Personal Data and your privacy. This Personal Data Protection Policy (“Policy
-    “) describes how uses your personal data in accordance with the Personal Data Protection Act 2010 of Malaysia.<br>
+    Hotel Transylvania together with its subsidiaries, affiliates, related and
+    associated companies respects and is committed to the protection of your
+    Personal Data and your privacy. This Personal Data Protection Policy
+    (“Policy “) describes how uses your personal data in accordance with the
+    Personal Data Protection Act 2010 of Malaysia.<br />
 
     <h2>Personal Data</h2>
-    <b>Type of Personal Data</b><br>
-    “Personal Data” means information about you, from which you are identifiable. This includes, but is not limited to,
-    your name, race, nationality, identification card number, passport number, date of birth, address, telephone
-    number, email address, vehicle number, credit card or payment details, any information about you which you have
-    provided to Hotel Transylvania related to your reservation or stay (such as travel details and preferences),
-    information relating to your purchase and/or receipt of products or services, reviews and suggestions about Hotel
-    Transylvania properties, customer surveys, closed circuit television audio and images for security purposes and/or
-    any information about you that has been or may be collected, stored, used and processed by Hotel Transylvania from
-    time to time. All information requested for in the relevant forms and documents is obligatory to be provided by you
-    unless stated otherwise. Should you fail to provide the obligatory information, we may be unable to process your
-    request and/or provide you with relevant services and products. For vendors, suppliers, or service providers, the
-    provision of your Personal Data is necessary for Hotel Transylvania to purchase and pay for the concerned goods
-    and/or services.<br><br>
+    <b>Type of Personal Data</b><br />
+    “Personal Data” means information about you, from which you are
+    identifiable. This includes, but is not limited to, your name, race,
+    nationality, identification card number, passport number, date of birth,
+    address, telephone number, email address, vehicle number, credit card or
+    payment details, any information about you which you have provided to Hotel
+    Transylvania related to your reservation or stay (such as travel details and
+    preferences), information relating to your purchase and/or receipt of
+    products or services, reviews and suggestions about Hotel Transylvania
+    properties, customer surveys, closed circuit television audio and images for
+    security purposes and/or any information about you that has been or may be
+    collected, stored, used and processed by Hotel Transylvania from time to
+    time. All information requested for in the relevant forms and documents is
+    obligatory to be provided by you unless stated otherwise. Should you fail to
+    provide the obligatory information, we may be unable to process your request
+    and/or provide you with relevant services and products. For vendors,
+    suppliers, or service providers, the provision of your Personal Data is
+    necessary for Hotel Transylvania to purchase and pay for the concerned goods
+    and/or services.<br /><br />
 
-    <b>Source of Personal Data</b><br>
-    Hotel Transylvania collects your Personal Data directly, or indirectly through our authorized agents and
-    representatives such as travel agents, your legal representatives, credit reference agencies, in connection with
-    any transaction, arrangements and/or enquiries made with the Hotel Transylvania including when you send us
-    completed enquiry, application and/or registration forms via various means, including online and physical
-    hardcopies at public venues or in our premises. Your personal data may also be collected from cookies through the
-    use of our website. In addition to the Personal Data you provide to Hotel Transylvania directly, Hotel Transylvania
-    also collects your Personal Data from a variety of sources, including without limitation, when you visit or stay at
-    Hotel Transylvania, when you make a reservation to stay at Hotel Transylvania over the telephone, via the website
-    or otherwise, when you interact and communicate with Hotel Transylvania at events or otherwise or when you use the
-    website. For persons, vendors, suppliers, tenants or service providers, Hotel Transylvania collects your Personal
-    Data directly or indirectly through our authorized agents and representatives, third parties such as your employer,
-    authorized agents or credit reference agencies when you enter into any transactions or arrangements with the Hotel
-    Transylvania, including in connection with the supply or proposed supply of products or services, when you send us
-    a completed enquiry and/or credit application or apply for employment.<br><br>
+    <b>Source of Personal Data</b><br />
+    Hotel Transylvania collects your Personal Data directly, or indirectly
+    through our authorized agents and representatives such as travel agents,
+    your legal representatives, credit reference agencies, in connection with
+    any transaction, arrangements and/or enquiries made with the Hotel
+    Transylvania including when you send us completed enquiry, application
+    and/or registration forms via various means, including online and physical
+    hardcopies at public venues or in our premises. Your personal data may also
+    be collected from cookies through the use of our website. In addition to the
+    Personal Data you provide to Hotel Transylvania directly, Hotel Transylvania
+    also collects your Personal Data from a variety of sources, including
+    without limitation, when you visit or stay at Hotel Transylvania, when you
+    make a reservation to stay at Hotel Transylvania over the telephone, via the
+    website or otherwise, when you interact and communicate with Hotel
+    Transylvania at events or otherwise or when you use the website. For
+    persons, vendors, suppliers, tenants or service providers, Hotel
+    Transylvania collects your Personal Data directly or indirectly through our
+    authorized agents and representatives, third parties such as your employer,
+    authorized agents or credit reference agencies when you enter into any
+    transactions or arrangements with the Hotel Transylvania, including in
+    connection with the supply or proposed supply of products or services, when
+    you send us a completed enquiry and/or credit application or apply for
+    employment.<br /><br />
 
-    <b>Processing of Personal Data</b><br>
-    Your Personal Data is collected and used as required or permitted by law to, among other uses: process your hotel
-    reservation and stay; process and confirm your restaurant reservation; provide you the goods and services you have
-    purchased or requested; administer membership programs; for purposes of billing and payments relating to your use
-    of any goods and services you have purchased or requested; to respond to questions, comments and feedback from you;
-    provide you with a better and more personalized level of service; to provide for your safety and security as well
-    as for the staff; for internal administrative purposes including accounting, compliance and auditing; to comply
-    with regulatory requirements and obligations under law and you agree and consent to Hotel Transylvania using and
-    processing your Personal Data in the manner as identified in this Policy.<br><br>
+    <b>Processing of Personal Data</b><br />
+    Your Personal Data is collected and used as required or permitted by law to,
+    among other uses: process your hotel reservation and stay; process and
+    confirm your restaurant reservation; provide you the goods and services you
+    have purchased or requested; administer membership programs; for purposes of
+    billing and payments relating to your use of any goods and services you have
+    purchased or requested; to respond to questions, comments and feedback from
+    you; provide you with a better and more personalized level of service; to
+    provide for your safety and security as well as for the staff; for internal
+    administrative purposes including accounting, compliance and auditing; to
+    comply with regulatory requirements and obligations under law and you agree
+    and consent to Hotel Transylvania using and processing your Personal Data in
+    the manner as identified in this Policy.<br /><br />
 
-    <b>Disclosures of Personal Data</b><br>
-    Your Personal Data may be transferred, accessed or disclosed within Hotel Transylvania or to third parties (within
-    or outside of Malaysia) for the purposes of processing your reservation for your stay at a Hotel Transylvania
-    property and/or your receipt of products and services. Hotel Transylvania may engage service providers or third
-    parties to perform functions on Hotel Transylvania’s behalf, and consequently may provide access or disclose your
-    Personal Data to such service providers or third parties. Such third parties include, among others: payment
-    processors, travel agents, technology service providers, external auditors, law enforcement, regulatory and
-    governmental authorities in order to comply with statutory and government requirements. Your Personal Data may also
-    be shared in connection with a corporate transaction, such as a sale of a subsidiary or a division, merger,
-    consolidation, or asset sale. For vendors, suppliers, or service providers your Personal Data may be transferred,
-    accessed or disclosed within Hotel Transylvania or to third parties (within or outside of Malaysia) appointed by us
-    to provide services to us or on our behalf such as financial institutions, auditors, lawyers, company secretaries,
-    software vendors, contractors, organizers, other advisers, travel agencies or insurance companies.<br><br>
+    <b>Disclosures of Personal Data</b><br />
+    Your Personal Data may be transferred, accessed or disclosed within Hotel
+    Transylvania or to third parties (within or outside of Malaysia) for the
+    purposes of processing your reservation for your stay at a Hotel
+    Transylvania property and/or your receipt of products and services. Hotel
+    Transylvania may engage service providers or third parties to perform
+    functions on Hotel Transylvania’s behalf, and consequently may provide
+    access or disclose your Personal Data to such service providers or third
+    parties. Such third parties include, among others: payment processors,
+    travel agents, technology service providers, external auditors, law
+    enforcement, regulatory and governmental authorities in order to comply with
+    statutory and government requirements. Your Personal Data may also be shared
+    in connection with a corporate transaction, such as a sale of a subsidiary
+    or a division, merger, consolidation, or asset sale. For vendors, suppliers,
+    or service providers your Personal Data may be transferred, accessed or
+    disclosed within Hotel Transylvania or to third parties (within or outside
+    of Malaysia) appointed by us to provide services to us or on our behalf such
+    as financial institutions, auditors, lawyers, company secretaries, software
+    vendors, contractors, organizers, other advisers, travel agencies or
+    insurance companies.<br /><br />
 
-    <b>Personal Information from Minors</b><br>
-    Hotel Transylvania does not knowingly collect Personal Data from children or minors except where required by law.
-    If you are a child or minor, you may only use our website and services with the permission of your parent or
-    guardian.<br><br>
+    <b>Personal Information from Minors</b><br />
+    Hotel Transylvania does not knowingly collect Personal Data from children or
+    minors except where required by law. If you are a child or minor, you may
+    only use our website and services with the permission of your parent or
+    guardian.<br /><br />
 
-    <b>Right to Access & Correct Personal Data</b><br>
-    You have the right to access and correct your personal data held by us (subject to any exceptions under applicable
-    laws).<br><br>
+    <b>Right to Access & Correct Personal Data</b><br />
+    You have the right to access and correct your personal data held by us
+    (subject to any exceptions under applicable laws).<br /><br />
 
-    <b>Miscellaneous</b><br>
-    Hotel Transylvania may from time to time update this Policy at any time to ensure that this Policy is consistent
-    with our future developments, industry trends and/or changes in legal or regulatory requirements. Any changes to
-    this Policy will be posted to our website. By continuing to communicate with Hotel Transylvania or by continuing to
-    use Hotel Transylvania ‘s services following the modifications to this Policy you signify your acceptance the
-    revised Policy then in effect.<br><br>
+    <b>Miscellaneous</b><br />
+    Hotel Transylvania may from time to time update this Policy at any time to
+    ensure that this Policy is consistent with our future developments, industry
+    trends and/or changes in legal or regulatory requirements. Any changes to
+    this Policy will be posted to our website. By continuing to communicate with
+    Hotel Transylvania or by continuing to use Hotel Transylvania ‘s services
+    following the modifications to this Policy you signify your acceptance the
+    revised Policy then in effect.<br /><br />
   </span>
   <span>
     <h1>FAQ</h1>
     <h2>(Customer)</h2>
     <strong>At what time can I check-in? By what time must I check-out?</strong>
-    As a rough guide, check-in is after 12 a.m. and check-out is before 12am.<br><br>
+    As a rough guide, check-in is after 12 a.m. and check-out is before 12am.<br /><br />
 
-    <strong>When do I need to pay for the accommodation?</strong>
-    Payment of any outstanding balance is made when you check out, but payment must be guaranteed when you check in,
-    unless agreed otherwise on the basis of the applicable rates.<br><br>
+    <strong>When do I need to pay for the accommodation?</strong> Payment of any
+    outstanding balance is made when you check out, but payment must be
+    guaranteed when you check in, unless agreed otherwise on the basis of the
+    applicable rates.<br /><br />
 
-    <strong>Can I pay by credit card?</strong>
-    Yes, we accept Visa, MasterCard, JCB, American Express and Diners Club cards. <br><br>
+    <strong>Can I pay by credit card?</strong> Yes, we accept Visa, MasterCard,
+    JCB, American Express and Diners Club cards. <br /><br />
 
-    <strong>Is Reception open 24 hours?</strong>
-    Yes, Reception service is available 24 hours.<br><br>
+    <strong>Is Reception open 24 hours?</strong> Yes, Reception service is
+    available 24 hours.<br /><br />
 
-    <strong>Which languages are spoken at Reception?</strong>
-    English, Malay and Chinese<br><br>
+    <strong>Which languages are spoken at Reception?</strong> English, Malay and
+    Chinese<br /><br />
 
-    <strong>Can I leave my luggage?</strong>
-    Yes, we can look after your luggage. If at check in your room is not ready yet or in case of early check out after.
-    We will store your luggage free of charge on your check-in and check-out days.<br><br>
+    <strong>Can I leave my luggage?</strong> Yes, we can look after your
+    luggage. If at check in your room is not ready yet or in case of early check
+    out after. We will store your luggage free of charge on your check-in and
+    check-out days.<br /><br />
 
-    <strong>Internet connection?</strong>
-    A wireless internet connection is available throughout the hotel.
-    The guest rooms feature hi-speed web connectivity (both wireless and cabled).<br><br>
+    <strong>Internet connection?</strong> A wireless internet connection is
+    available throughout the hotel. The guest rooms feature hi-speed web
+    connectivity (both wireless and cabled).<br /><br />
 
-    <strong>What is offered at breakfast? What Time?</strong>
-    The buffet breakfast includes a selection of croissants, charcuterie, cheeses, eggs and bacon. Breakfast is served
-    from 7am to 10am, every day.<br><br>
+    <strong>What is offered at breakfast? What Time?</strong> The buffet
+    breakfast includes a selection of croissants, charcuterie, cheeses, eggs and
+    bacon. Breakfast is served from 7am to 10am, every day.<br /><br />
 
-    <strong>Is room service available? If so, at what times?</strong>
-    Room service is available from 7am to 9pm.<br><br>
+    <strong>Is room service available? If so, at what times?</strong> Room
+    service is available from 7am to 9pm.<br /><br />
 
-    <strong>Do you have smoking and non-smoking rooms?</strong>
-    You can choice Smoking or Non-Smoking room as You prefer.<br><br>
+    <strong>Do you have smoking and non-smoking rooms?</strong> You can choice
+    Smoking or Non-Smoking room as You prefer.<br /><br />
 
-    <strong>Are there car parking spaces or a car park?</strong>
-    Our hotel has a private car parking.<br><br>
+    <strong>Are there car parking spaces or a car park?</strong> Our hotel has a
+    private car parking.<br /><br />
 
-    <strong>Are pets allowed to stay at the hotel?</strong>
-    Not allowed.<br><br>
+    <strong>Are pets allowed to stay at the hotel?</strong> Not allowed.<br /><br />
 
-    <strong>How far in advance do I have to book?</strong>
-    As soon as you have planned your trip! We sometimes have last-minute availability, but in general the earlier you
-    book, the lower the room rate.<br><br>
+    <strong>How far in advance do I have to book?</strong> As soon as you have
+    planned your trip! We sometimes have last-minute availability, but in
+    general the earlier you book, the lower the room rate.<br /><br />
 
-    <strong>Is it possible to have a cot/child’s bed in the room? If so, at what price?</strong>
-    Yes, cots and children’s beds are available at additional cost of RM40 per night.<br><br>
-
+    <strong
+      >Is it possible to have a cot/child’s bed in the room? If so, at what
+      price?</strong
+    >
+    Yes, cots and children’s beds are available at additional cost of RM40 per
+    night.<br /><br />
 
     <h2>(Admin)</h2>
 
-    <strong>How is my hotel activated and starts selling?</strong>
-    When you have finished updating the availability calendar please send us an information e-mail. Upon receipt your
-    hotel will be immediately activated in our booking system and your hotel starts selling.<br><br>
+    <strong>How is my hotel activated and starts selling?</strong> When you have
+    finished updating the availability calendar please send us an information
+    e-mail. Upon receipt your hotel will be immediately activated in our booking
+    system and your hotel starts selling.<br /><br />
 
-    <strong>How do I receive booking information?</strong>
-    If a booking through our website has been made by us or our Operator-Admin you will automatically receive an e-mail
-    notification by the system informing you about the binding booking.<br><br>
+    <strong>How do I receive booking information?</strong> If a booking through
+    our website has been made by us or our Operator-Admin you will automatically
+    receive an e-mail notification by the system informing you about the binding
+    booking.<br /><br />
 
-    <strong>How to reconfirm booking information?</strong>
-    We kindly ask you to send us a confirmation e-mail within 24 hours to make sure you have received the binding
-    booking.<br><br>
+    <strong>How to reconfirm booking information?</strong> We kindly ask you to
+    send us a confirmation e-mail within 24 hours to make sure you have received
+    the binding booking.<br /><br />
 
-    <strong>When do we receive payment for bookings?</strong>
-    We take over the task of the entire client encashment. The client’s funds less our agreed commission fee will be
-    transferred to you 1 week before arrival of the client to your designated bank account.<br><br>
-
+    <strong>When do we receive payment for bookings?</strong> We take over the
+    task of the entire client encashment. The client’s funds less our agreed
+    commission fee will be transferred to you 1 week before arrival of the
+    client to your designated bank account.<br /><br />
   </span>
 
   <p-footer>
-    <button type="button" pButton icon="pi pi-check" (click)="display=false" label="OK" style="background-color:black; border: 1px solid black"></button>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-check"
+      (click)="display = false"
+      label="OK"
+      style="background-color:black; border: 1px solid black"
+    ></button>
   </p-footer>
 </p-dialog>

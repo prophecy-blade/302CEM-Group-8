@@ -55,3 +55,25 @@
 .suites-search {
   margin-top: 10px;
 }
+
+:host >>> .booking-btn {
+  background-color: black;
+  border-color: black;
+  margin-left: 150px;
+}
+
+.ui-button:enabled:hover {
+  background-color: gold;
+  border-color: black;
+  color: black;
+}
+
+.ui-grid-col-6 {
+  margin-left: 50px;
+}
+
+:host >>> .done-btn {
+  background-color: black;
+  border: 1px solid black;
+  color: white;
+}

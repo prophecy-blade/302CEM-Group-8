@@ -13,6 +13,10 @@ import { SuiteSingleComponent } from './suites-detail/suite-single/suite-single.
 import { UserInfoComponent } from './account-detail/user-info/user-info.component';
 import { UserBookingComponent } from './account-detail/user-booking/user-booking.component';
 import { ContactComponent } from './contact/contact.component';
+import { ServicesComponent } from './services/services.component';
+import { AdminBookingManagementComponent } from './admin-booking-management/admin-booking-management.component';
+import { AdminSuitesManagementComponent } from './admin-suites-management/admin-suites-management.component';
+import {FrontdeskManagementComponent} from './frontdesk-management/frontdesk-management.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' }, //empty path means when no path from the url, then straightaway redirect to-
@@ -39,7 +43,14 @@ const routes: Routes = [
       { path: 'user-booking', component: UserBookingComponent }
     ]
   },
-  { path: 'contact', component: ContactComponent }
+  { path: 'services', component: ServicesComponent },
+  { path: 'contact', component: ContactComponent },
+  {
+    path: 'admin-booking-management',
+    component: AdminBookingManagementComponent
+  },
+  { path: 'admin-suites-management', component: AdminSuitesManagementComponent },
+  { path: 'frontdesk-management', component: FrontdeskManagementComponent }
 ];
 
 @NgModule({
