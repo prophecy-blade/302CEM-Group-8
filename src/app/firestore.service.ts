@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 // import 'rxjs/add/operator/map';
 import { map } from 'rxjs/operators';
 import { Room } from './room';
-import { AuthService } from './core/auth.service';
+import { Booking } from './booking';
 
 // interface Room {
 //   // id: String;
@@ -41,22 +41,21 @@ import { AuthService } from './core/auth.service';
 //   timestampsInSnapshots: true
 // });
 
-interface Booking {
-  check_in: String;
-  check_out: String;
-  room_id: String;
-  user_id: any;
-}
-
 @Injectable()
 export class FirestoreService {
   //room = name of the collection
   rooms: Observable<Room[]>;
   // instance of firestore collection
   roomsCollection: AngularFirestoreCollection<Room>;
-  booking: AngularFirestoreCollection<Booking>;
-  public auth: AuthService
+  //booking = name of the collection
+  bookings: Observable<Booking[]>;
+
+  bookingsCollection: AngularFirestoreCollection<Booking>;
   // roomCollection: AngularFirestoreCollection<Room>;
+
+  roomDoc: AngularFirestoreDocument<Room>;
+
+  bookingDoc: AngularFirestoreDocument<Booking>;
 
   // room: AngularFirestoreDocument<Room>;
   constructor(
@@ -68,22 +67,17 @@ export class FirestoreService {
     this.roomsCollection = this.afs.collection('Room', x =>
       x.orderBy('Name', 'asc')
     );
+
+    this.bookings = this.afs.collection<Booking>('Booking').valueChanges();
+
+    this.bookingsCollection = this.afs.collection('Booking', x =>
+      x.orderBy('check_in', 'asc')
+    );
   }
 
   ngOnInit() {}
 
   public getRoom() {
-    // let data = this.afs.collection<Room>(`hotelsystem/main_database/booking/inStay/room`).valueChanges();
-    // console.log(data);
-    // return data
-    // this.room = this.roomCollection.snapshotChanges().map(arr = >{
-
-    // })
-    // return this.afs.collection<Room>(`Room`).valueChanges();
-    // stayRoomRef.get().then((value)=>{
-    //   return value;
-    // });
-
     // fetch auto-id field with data
     return (this.rooms = this.afs
       .collection('Room')
@@ -97,27 +91,38 @@ export class FirestoreService {
           });
         })
       ));
-
-    // return this.getRoom().map(response => response.json());
   }
 
-  public bookRoom(roomID: String, checkIn: String, checkOut: String) {
-    let user = {}
-    if(this.auth.user !== null && this.auth.user !== undefined) {
-      user = this.auth.user;
-    } else {
-      return false
-    }
-    let book: Booking = {
-      room_id: roomID,
-      user_id: user,
-      check_in: checkIn,
-      check_out: checkOut
-    }
-    this.booking.add(book);
+  public getBooking() {
+    return (this.bookings = this.afs
+      .collection('Booking')
+      .snapshotChanges()
+      .pipe(
+        map(changes => {
+          return changes.map(a => {
+            const data = a.payload.doc.data() as Booking;
+            data.id = a.payload.doc.id;
+            return data;
+          });
+        })
+      ));
   }
 
   addRoom(room) {
     this.roomsCollection.add(room);
+  }
+
+  deleteRoom(room) {
+    this.roomDoc = this.afs.doc(`Room/${room.id}`);
+    this.roomDoc.delete();
+  }
+
+  addBooking(booking) {
+    this.bookingsCollection.add(booking);
+  }
+
+  deleteBooking(booking) {
+    this.bookingDoc = this.afs.doc(`Booking/${booking.id}`);
+    this.bookingDoc.delete();
   }
 }
