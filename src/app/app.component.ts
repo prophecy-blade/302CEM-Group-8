@@ -12,11 +12,12 @@ export class AppComponent {
   title = 'Hotel Transylvania';
   display: boolean = false;
   items: MenuItem[];
+  adminItems: MenuItem[];
 
   user_id: String = null;
 
   constructor(public auth: AuthService) {
-    console.log(this.auth.user);
+    console.log(auth.user);
   }
 
   ngOnInit() {
@@ -27,7 +28,27 @@ export class AppComponent {
         routerLink: ['/home']
       },
       { label: 'Suites', icon: 'fas fa-bed', routerLink: ['/suites'] },
-      { label: 'Services', icon: 'fas fa-book' },
+      { label: 'Services', icon: 'fas fa-book', routerLink: ['/services'] },
+      { label: 'Account', icon: 'fas fa-user', routerLink: ['/user-account'] },
+      { label: 'Contact', icon: 'fas fa-envelope', routerLink: ['/contact'] }
+    ];
+
+    this.adminItems = [
+      {
+        label: 'The Transylvania',
+        icon: 'fas fa-hotel',
+        routerLink: ['/home']
+      },
+      {
+        label: 'Suites Management',
+        icon: 'fas fa-bed',
+        routerLink: ['/admin-suites-management']
+      },
+      {
+        label: 'Booking Management',
+        icon: 'fas fa-book',
+        routerLink: ['/admin-booking-management']
+      },
       { label: 'Account', icon: 'fas fa-user', routerLink: ['/user-account'] },
       { label: 'Contact', icon: 'fas fa-envelope', routerLink: ['/contact'] }
     ];
