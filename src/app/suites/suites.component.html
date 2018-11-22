@@ -1,19 +1,19 @@
 <div class="suites-option">
   <mat-form-field class="example-full-width">
-    <input matInput [matDatepicker]="picker" placeholder="Check-in date" />
+    <input matInput [matDatepicker]="picker" placeholder="Check-in date" [(ngModel)]="filter.checkIn" />
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker touchUi #picker></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field class="example-full-width">
-    <input matInput [matDatepicker]="picker2" placeholder="Check-out date" />
+    <input matInput [matDatepicker]="picker2" placeholder="Check-out date" [(ngModel)]="filter.checkOut" />
     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
     <mat-datepicker touchUi #picker2></mat-datepicker>
   </mat-form-field>
 
   <mat-form-field>
-    <mat-select placeholder="Pax">
-      <mat-option *ngFor="let Adults of totalPax" [value]="Adults.value">
+    <mat-select placeholder="Pax" [(ngModel)]="filter.noOfPax">
+      <mat-option *ngFor="let Adults of totalAdults" [value]="Adults.value" >
         {{ Adults.viewValue }}
       </mat-option>
     </mat-select>
@@ -80,7 +80,7 @@
 >
   <p-carousel
     headerText="Please select a room"
-    [value]="availableRoom"
+    [value]="filteredRoom"
     *ngIf="arr.length > 0; else: noData"
     numVisible="2"
   >
@@ -109,7 +109,7 @@
               type="button"
               pButton
               label="Book Now"
-              (click)="booking(room.id)"
+              (click)="booking(room)"
               class="booking-btn"
             ></button>
           </div>

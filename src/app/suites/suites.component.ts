@@ -28,6 +28,13 @@ export class SuitesComponent implements OnInit {
 
   availableRoom: any = [];
 
+  public filter: any = {
+    noOfPax: 0,
+    checkIn: "",
+    checkOut: ""
+  }
+  filteredRoom: any = [];
+
   constructor(
     // public database: DatabaseService,
     // private afs: AngularFirestore,
@@ -58,15 +65,53 @@ export class SuitesComponent implements OnInit {
     console.log("Available Room: ", this.availableRoom);
   }
   
-  totalAdults: TotalPax[] = [
+  totalAdults: any = [
     { value: 0, viewValue: 0 },
     { value: 1, viewValue: 1 },
-    { value: 2, viewValue: 2 }
+    { value: 2, viewValue: 2 },
+    { value: 3, viewValue: 3 },
+    { value: 4, viewValue: 4 },
+    { value: 5, viewValue: 5 }
   ];
 
   filterRoom() {
     console.log("Room Filter")
-    this.showDialog();
+    let filterPax = this.filter.noOfPax;
+    let dateIn = this.filter.checkIn;
+    let dateOut = this.filter.checkOut;
+    let available = this.availableRoom;
+    let filter = this.filteredRoom;
+
+    if(filterPax > 0) {
+      console.log("Filter Pax");
+      for(var i = 0; i < available.length; i ++) {
+        if(available[i].stayin_amount >= filterPax) {
+          filter.push(available[i]);
+        }
+      }
+    }
+    if(dateIn !== "") {
+      // for(var i = 0; i < available.length; i ++) {
+      //   if(available[i].stayin_amount == filterPax) {
+      //     filter.push(available[i]);
+      //   }
+      // }
+    }
+    if(dateOut !== "") {
+      // for(var i = 0; i < available.length; i ++) {
+      //   if(available[i].stayin_amount == filterPax) {
+      //     filter.push(available[i]);
+      //   }
+      // }
+    }
+
+    if(filter.length == 0) {
+      this.filteredRoom = this.availableRoom;
+      this.showDialog();
+    } else {
+      this.showDialog();
+    }
+
   }
 
   // totalChildrens: TotalChildrens[] = [
@@ -79,8 +124,10 @@ export class SuitesComponent implements OnInit {
   //     this.firestore.add({severity: 'info', summary: 'Room Selected', detail: 'Type:' + room.Name});
   // }
 
-  booking(room_id, checkIN = null, checkOUT = null) {
-    this.firestore.bookRoom(room_id, checkIN, checkOUT);
+  booking(room, checkIN = null, checkOUT = null) {
+    console.log(room);
+
+    this.firestore.bookRoom(room.id, checkIN, checkOUT);
   }
 
   display: boolean = false;
