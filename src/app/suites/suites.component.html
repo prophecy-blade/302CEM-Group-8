@@ -32,7 +32,7 @@
     </mat-form-field>
   -->
 
-  <button mat-icon-button class="suites-search" (click)="showDialog()">
+  <button mat-icon-button class="suites-search" (click)="filterRoom()">
     <mat-icon aria-label="Search">search</mat-icon>
   </button>
 </div>
@@ -80,7 +80,7 @@
 >
   <p-carousel
     headerText="Please select a room"
-    [value]="arr"
+    [value]="availableRoom"
     *ngIf="arr.length > 0; else: noData"
     numVisible="2"
   >
@@ -109,7 +109,7 @@
               type="button"
               pButton
               label="Book Now"
-              (click)="selectRoom(room)"
+              (click)="booking(room.id)"
               class="booking-btn"
             ></button>
           </div>

@@ -11,6 +11,9 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Room } from './room';
 import { Booking } from './booking';
+import { History } from './history';
+import { AuthService } from './core/auth.service';
+import { userInfo } from 'os';
 
 // interface Room {
 //   // id: String;
@@ -43,6 +46,9 @@ import { Booking } from './booking';
 
 @Injectable()
 export class FirestoreService {
+  public auth: AuthService;
+  snapshot: any;
+  historysnapshot: any;
   //room = name of the collection
   rooms: Observable<Room[]>;
   // instance of firestore collection
@@ -58,6 +64,10 @@ export class FirestoreService {
   bookingDoc: AngularFirestoreDocument<Booking>;
 
   // room: AngularFirestoreDocument<Room>;
+
+  historyCollection: AngularFirestoreCollection<History>;
+  history: Observable<History[]>;
+
   constructor(
     private afs: AngularFirestore // private afd: AngularFirestoreDocument, // private afc: AngularFirestoreCollection
   ) {
@@ -73,6 +83,12 @@ export class FirestoreService {
     this.bookingsCollection = this.afs.collection('Booking', x =>
       x.orderBy('check_in', 'asc')
     );
+
+    this.history = this.afs.collection<History>('History').valueChanges();
+
+    this.historyCollection = this.afs.collection('History', ref => {
+      return ref.orderBy('room_id').orderBy('user_id');
+    });
   }
 
   ngOnInit() {}
@@ -106,6 +122,62 @@ export class FirestoreService {
           });
         })
       ));
+  }
+
+  public bookRoom(roomID: string, checkIn: string, checkOut: string) {
+    let user = {};
+    if (this.auth.user !== null && this.auth.user !== undefined) {
+      user = this.auth.user;
+    } else {
+      return false;
+    }
+    // let book: Booking = {
+    //   room_id: roomID,
+    //   user_id: user,
+    //   check_in: checkIn,
+    //   check_out: checkOut
+    // };
+
+    // this.bookingsCollection.add(book);
+    // this.roomsCollection.doc(roomID).update({
+    //   status: 'Booking'
+    // });
+  }
+
+  checkIn(roomID) {
+    this.roomsCollection.doc(roomID).update({
+      status: 'CheckIn',
+      check_in_date: new Date()
+    });
+  }
+
+  checkOut(roomID, UserID, checkInDate, amount) {
+    this.roomsCollection.doc(roomID).update({
+      status: 'CheckOut',
+      check_out_date: new Date()
+    });
+    // this.historyCollection.add({
+    //   room_id: roomID,
+    //   user_id: UserID,
+    //   check_in_date: checkInDate,
+    //   check_out_date: new Date(),
+    //   amount: amount
+    // });
+  }
+
+  public getHistory() {
+    return this.afs
+      .collection('History')
+      .snapshotChanges()
+      .pipe(
+        map(changes => {
+          return changes.map(a => {
+            const data = a.payload.doc.data() as History;
+            data.id = a.payload.doc.id;
+            return data;
+          });
+        })
+      );
   }
 
   addRoom(room) {
