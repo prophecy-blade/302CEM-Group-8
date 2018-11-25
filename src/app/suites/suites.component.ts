@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 // import { DatabaseService } from '../database.service';
 import { FirestoreService } from '../firestore.service';
 import { Room } from '../room';
-import  {AuthService } from '../core/auth.service';
+import { AuthService } from '../core/auth.service';
 
 // import { AngularFirestore } from '@angular/fire/firestore';
 
@@ -26,7 +26,7 @@ export interface TotalPax {
 export class SuitesComponent implements OnInit {
   arr: Room[] = [];
 
-  availableRooom: any = [];
+  availableRoom: any = [];
 
   constructor(
     // public database: DatabaseService,
@@ -48,14 +48,14 @@ export class SuitesComponent implements OnInit {
     });
   }
 
-  getAvailableRoom(room){
-    let available = this.availableRooom;
-    for(var i =0; i<room.length; i++){
-      if(room[i].status == undefined || room[i].status == null){
-        available.push (room[i]);
+  getAvailableRoom(room) {
+    let available = this.availableRoom;
+    for (var i = 0; i < room.length; i++) {
+      if (room[i].status == undefined || room[i].status == null) {
+        available.push(room[i]);
       }
     }
-    console.log("Available Room: ", this.availableRooom);
+    console.log('Available Room: ', this.availableRoom);
   }
 
   totalPax: TotalPax[] = [
@@ -64,8 +64,8 @@ export class SuitesComponent implements OnInit {
     { value: 2, viewValue: 2 }
   ];
 
-  filterRoom(){
-    console.log("Room Filter")
+  filterRoom() {
+    console.log('Room Filter');
     this.showDialog();
   }
   // totalChildrens: TotalChildrens[] = [
@@ -78,8 +78,8 @@ export class SuitesComponent implements OnInit {
   //     this.firestore.add({severity: 'info', summary: 'Room Selected', detail: 'Type:' + room.Name});
   // }
 
-  booking(room_id, checkIN = null, checkOUT = null){
-    this.firestore.bookRoom (room_id, checkIN, checkOUT);
+  booking(room_id, checkIN = null, checkOUT = null) {
+    this.firestore.bookRoom(room_id, checkIN, checkOUT);
   }
 
   display: boolean = false;
