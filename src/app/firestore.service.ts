@@ -9,18 +9,38 @@ import * as firebase from 'firebase';
 import { Observable } from 'rxjs';
 // import 'rxjs/add/operator/map';
 import { map } from 'rxjs/operators';
-import { Room } from './room';
-import { Booking } from './booking';
-import { History } from './history';
+// import { Room } from './room';
+// import { Booking } from './booking';
+// import { History } from './history';
 import { AuthService } from './core/auth.service';
 import { userInfo } from 'os';
 
-// interface Room {
-//   // id: String;
-//   Name: String;
-//   // price: Number;
-//   // type: String;
-// }
+interface Room {
+  //  tc: pls change all the field to small letter so that every fields in tables is small letter and easier for work
+  id?: string;
+  Name: string;
+  type?: string; //not optional remove ? after screen change
+  RoomNo?: number;
+  Description: string;
+  Price: number;
+}
+
+interface Booking {
+  id?: string;
+  check_in: string;
+  check_out: string;
+  room_id: string;
+  user_id: any;
+}
+
+interface History {
+  id?: string; //tc: ? mean optional, no ? mean need field
+  user_id: string;
+  room_id: string;
+  amount: number;
+  check_in_date?: Date;
+  check_out_date?: Date;
+}
 
 // firebase.initializeApp({
 //   apiKey: "AIzaSyBr71V5ZUPDcx6CusFJWPZ52gwRa8DlgSA",
@@ -131,38 +151,58 @@ export class FirestoreService {
     } else {
       return false;
     }
-    // let book: Booking = {
-    //   room_id: roomID,
-    //   user_id: user,
-    //   check_in: checkIn,
-    //   check_out: checkOut
-    // };
-
-    // this.bookingsCollection.add(book);
-    // this.roomsCollection.doc(roomID).update({
-    //   status: 'Booking'
-    // });
+    let book: Booking = {
+      room_id: roomID,
+      user_id: user,
+      check_in: checkIn,
+      check_out: checkOut
+    };
+    this.bookingsCollection.add(book);
+    this.roomsCollection.doc(roomID).update({
+      status: 'Booking'
+    });
   }
 
-  checkIn(roomID) {
+  public cancelRoom(roomID: string) {
+    let user = {};
+    if (this.auth.user !== null && this.auth.user !== undefined) {
+      user = this.auth.user;
+    } else {
+      return false;
+    }
+    this.roomsCollection.doc(roomID).update({
+      status: 'Available',
+      user_id: null,
+      check_in: null,
+      check_out: null
+    });
+  }
+
+  public checkIn(roomID: string) {
     this.roomsCollection.doc(roomID).update({
       status: 'CheckIn',
       check_in_date: new Date()
     });
   }
 
-  checkOut(roomID, UserID, checkInDate, amount) {
+  public checkOut(
+    roomID: string,
+    UserID: string,
+    checkInDate: Date,
+    amount: number
+  ) {
     this.roomsCollection.doc(roomID).update({
       status: 'CheckOut',
       check_out_date: new Date()
     });
-    // this.historyCollection.add({
-    //   room_id: roomID,
-    //   user_id: UserID,
-    //   check_in_date: checkInDate,
-    //   check_out_date: new Date(),
-    //   amount: amount
-    // });
+    this.historyCollection.add({
+      room_id: roomID,
+      user_id: UserID,
+      check_in_date: checkInDate,
+      check_out_date: new Date(),
+      amount: amount
+    });
+    this.roomsCollection.doc(roomID).delete();
   }
 
   public getHistory() {
