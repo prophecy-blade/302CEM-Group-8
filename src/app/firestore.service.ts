@@ -282,9 +282,10 @@ export class FirestoreService {
     } else {
       return false
     }
+    var userid = "YxBmMudBGMRkpf2nkyyrUW8XF0s2";
     let book: Booking = {
       room_id: roomID,
-      user_id: user,
+      user_id: userid,
       check_in: checkIn,
       check_out: checkOut
     }
