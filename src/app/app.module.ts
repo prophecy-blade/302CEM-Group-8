@@ -54,6 +54,7 @@ import { UserBookingComponent } from './account-detail/user-booking/user-booking
 import { database } from 'firebase';
 import { AdminSuitesManagementComponent } from './admin-suites-management/admin-suites-management.component';
 import { AdminBookingManagementComponent } from './admin-booking-management/admin-booking-management.component';
+import { FrontdeskManagementComponent } from './frontdesk-management/frontdesk-management.component';
 // import { Room } from './room';
 // import { DatabaseService } from './database.service';
 
@@ -76,7 +77,8 @@ import { AdminBookingManagementComponent } from './admin-booking-management/admi
     UserInfoComponent,
     UserBookingComponent,
     AdminSuitesManagementComponent,
-    AdminBookingManagementComponent
+    AdminBookingManagementComponent,
+    FrontdeskManagementComponent
     // Room
   ],
   imports: [

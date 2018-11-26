@@ -3,10 +3,9 @@
     #dt
     [columns]="cols"
     [value]="arr"
-    selectionMode="single"
     [(selection)]="selectedBooking"
     [paginator]="true"
-    [rows]="15"
+    [rows]="10"
     sortMode="multiple"
     [rowsPerPageOptions]="[10, 20, 30]"
     [globalFilterFields]="['check_in', 'check_out', 'room_id', 'user_id']"
@@ -34,6 +33,7 @@
           {{ col.header }}
           <p-sortIcon [field]="col.field"></p-sortIcon>
         </th>
+        <th style="width:100px;">Action</th>
       </tr>
       <tr>
         <th *ngFor="let col of columns" [ngSwitch]="col.field">
@@ -70,6 +70,7 @@
             (input)="dt.filter($event.target.value, col.field, col.contains)"
           />
         </th>
+        <th></th>
       </tr>
     </ng-template>
 
@@ -80,6 +81,13 @@
         <td>{{ rowData.check_out }}</td>
         <td>{{ rowData.room_id }}</td>
         <td>{{ rowData.user_id }}</td>
+        <td>
+          <button mat-icon-button>
+            <mat-icon aria-label="Delete" (click)="onDelete(rowData)">
+              delete
+            </mat-icon>
+          </button>
+        </td>
       </tr>
     </ng-template>
 
@@ -202,7 +210,7 @@
       <button
         type="button"
         pButton
-        icon="fa fa-close"
+        icon="fa fa-delete"
         (click)="delete()"
         label="Delete"
       ></button>

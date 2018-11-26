@@ -3,11 +3,11 @@ import { FirestoreService } from '../firestore.service';
 // import { Booking } from '../booking';
 
 interface Booking {
-  id?: string,
-  check_in: string,
-  check_out: string,
-  room_id: string,
-  user_id: any
+  id?: string;
+  check_in: string;
+  check_out: string;
+  room_id: string;
+  user_id: any;
 }
 
 @Component({
@@ -51,5 +51,9 @@ export class AdminBookingManagementComponent implements OnInit {
       (this.model.check_out = ''),
       (this.model.room_id = ''),
       (this.model.user_id = '');
+  }
+
+  onDelete(booking) {
+    this.firestore.deleteBooking(booking);
   }
 }
